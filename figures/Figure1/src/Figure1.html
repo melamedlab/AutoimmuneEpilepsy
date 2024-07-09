@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Figure1</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Figure1_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Figure1_files/libs/quarto-html/quarto.js"></script>
+<script src="Figure1_files/libs/quarto-html/popper.min.js"></script>
+<script src="Figure1_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Figure1_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Figure1_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Figure1_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Figure1_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Figure1_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Figure1_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Figure1</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="figure-1" class="level2">
+<h2 class="anchored" data-anchor-id="figure-1">Figure 1</h2>
+<section id="data-load-and-set-up" class="level3">
+<h3 class="anchored" data-anchor-id="data-load-and-set-up">Data Load and Set Up</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.2     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.3     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>out_dir <span class="ot">&lt;-</span> <span class="st">"../output/"</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#data &lt;- read_csv("../../../data/Cytokine_Results_AE.csv")</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#data$Sample &lt;- paste0(data$Sample, "_", data$Batch)</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>metadata <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../../../data/AE_cytokine_metadata.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 33 Columns: 6
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (5): sample_name, Sample, ID, Group, sample_type
+dbl (1): Batch
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># data &lt;- data %&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   column_to_rownames("Sample") %&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   select(-Batch, -ID, -Group, -sample_type)</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ##############################################################</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># data &lt;- data.frame(lapply(data, function(x) {gsub("OOR &lt;", "0.64", x)}))</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># data &lt;- data.frame(lapply(data, function(x) {gsub("OOR &gt;", "10000", x)}))</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># data &lt;- data.frame(lapply(data, function(x) {gsub("OOR", "0.64", x)}))</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># data &lt;- lapply(data, function(x) {</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   as.numeric(as.character(x))</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># })</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># data &lt;- as.data.frame(data)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="batch-2" class="level3">
+<h3 class="anchored" data-anchor-id="batch-2">Batch 2</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>extract_std_curves <span class="ot">&lt;-</span> <span class="cf">function</span>(path){</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(readxl)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  raw_data <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(path)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="do">#### Standard Data Processing</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  standard_curve_data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(raw_data[<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>,])</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(standard_curve_data)[<span class="dv">2</span><span class="sc">:</span><span class="dv">9</span>] <span class="ot">&lt;-</span> standard_curve_data[,<span class="dv">1</span>][<span class="dv">2</span><span class="sc">:</span><span class="dv">9</span>]</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  standard.out <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">3</span>, <span class="fu">ncol</span>(standard_curve_data), <span class="dv">3</span>)){</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    tmp.data <span class="ot">&lt;-</span> standard_curve_data[,i<span class="sc">:</span>(i<span class="sc">+</span><span class="dv">2</span>)]</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    tmp.name <span class="ot">&lt;-</span> tmp.data[<span class="dv">1</span>,<span class="dv">1</span>]</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.na</span>(tmp.name)){</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">colnames</span>(tmp.data) <span class="ot">&lt;-</span> tmp.data[<span class="dv">2</span>,]</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>      tmp.data <span class="ot">&lt;-</span> tmp.data[<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">2</span>,]</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>      standard.out <span class="ot">&lt;-</span> <span class="fu">c</span>(standard.out, <span class="fu">list</span>(tmp.data))</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">names</span>(standard.out)[<span class="fu">length</span>(standard.out)] <span class="ot">&lt;-</span> tmp.name</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(standard.out)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>curves_batch2 <span class="ot">&lt;-</span> <span class="fu">extract_std_curves</span>(<span class="st">"../../../data/batch_2.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+• `` -&gt; `...1`
+• `` -&gt; `...2`
+• `` -&gt; `...3`
+• `Units: pg/mL` -&gt; `Units: pg/mL...4`
+• `` -&gt; `...5`
+• `` -&gt; `...6`
+• `Units: pg/mL` -&gt; `Units: pg/mL...7`
+• `` -&gt; `...8`
+• `` -&gt; `...9`
+• `Units: pg/mL` -&gt; `Units: pg/mL...10`
+• `` -&gt; `...11`
+• `` -&gt; `...12`
+• `Units: pg/mL` -&gt; `Units: pg/mL...13`
+• `` -&gt; `...14`
+• `` -&gt; `...15`
+• `Units: pg/mL` -&gt; `Units: pg/mL...16`
+• `` -&gt; `...17`
+• `` -&gt; `...18`
+• `Units: pg/mL` -&gt; `Units: pg/mL...19`
+• `` -&gt; `...20`
+• `` -&gt; `...21`
+• `Units: pg/mL` -&gt; `Units: pg/mL...22`
+• `` -&gt; `...23`
+• `` -&gt; `...24`
+• `Units: pg/mL` -&gt; `Units: pg/mL...25`
+• `` -&gt; `...26`
+• `` -&gt; `...27`
+• `Units: pg/mL` -&gt; `Units: pg/mL...28`
+• `` -&gt; `...29`
+• `` -&gt; `...30`
+• `Units: pg/mL` -&gt; `Units: pg/mL...31`
+• `` -&gt; `...32`
+• `` -&gt; `...33`
+• `Units: pg/mL` -&gt; `Units: pg/mL...34`
+• `` -&gt; `...35`
+• `` -&gt; `...36`
+• `Units: pg/mL` -&gt; `Units: pg/mL...37`
+• `` -&gt; `...38`
+• `` -&gt; `...39`
+• `Units: pg/mL` -&gt; `Units: pg/mL...40`
+• `` -&gt; `...41`
+• `` -&gt; `...42`
+• `Units: pg/mL` -&gt; `Units: pg/mL...43`
+• `` -&gt; `...44`
+• `` -&gt; `...45`
+• `Units: pg/mL` -&gt; `Units: pg/mL...46`
+• `` -&gt; `...47`
+• `` -&gt; `...48`
+• `Units: pg/mL` -&gt; `Units: pg/mL...49`
+• `` -&gt; `...50`
+• `` -&gt; `...51`
+• `Units: pg/mL` -&gt; `Units: pg/mL...52`
+• `` -&gt; `...53`
+• `` -&gt; `...54`
+• `Units: pg/mL` -&gt; `Units: pg/mL...55`
+• `` -&gt; `...56`
+• `` -&gt; `...57`
+• `Units: pg/mL` -&gt; `Units: pg/mL...58`
+• `` -&gt; `...59`
+• `` -&gt; `...60`
+• `Units: pg/mL` -&gt; `Units: pg/mL...61`
+• `` -&gt; `...62`
+• `` -&gt; `...63`
+• `Units: pg/mL` -&gt; `Units: pg/mL...64`
+• `` -&gt; `...65`
+• `` -&gt; `...66`
+• `Units: pg/mL` -&gt; `Units: pg/mL...67`
+• `` -&gt; `...68`
+• `` -&gt; `...69`
+• `Units: pg/mL` -&gt; `Units: pg/mL...70`
+• `` -&gt; `...71`
+• `` -&gt; `...72`
+• `Units: pg/mL` -&gt; `Units: pg/mL...73`
+• `` -&gt; `...74`
+• `` -&gt; `...75`
+• `Units: pg/mL` -&gt; `Units: pg/mL...76`
+• `` -&gt; `...77`
+• `` -&gt; `...78`
+• `Units: pg/mL` -&gt; `Units: pg/mL...79`
+• `` -&gt; `...80`
+• `` -&gt; `...81`
+• `Units: pg/mL` -&gt; `Units: pg/mL...82`
+• `` -&gt; `...83`
+• `` -&gt; `...84`
+• `Units: pg/mL` -&gt; `Units: pg/mL...85`
+• `` -&gt; `...86`
+• `` -&gt; `...87`
+• `Units: pg/mL` -&gt; `Units: pg/mL...88`
+• `` -&gt; `...89`
+• `` -&gt; `...90`
+• `Units: pg/mL` -&gt; `Units: pg/mL...91`
+• `` -&gt; `...92`
+• `` -&gt; `...93`
+• `Units: pg/mL` -&gt; `Units: pg/mL...94`
+• `` -&gt; `...95`
+• `` -&gt; `...96`
+• `Units: pg/mL` -&gt; `Units: pg/mL...97`
+• `` -&gt; `...98`
+• `` -&gt; `...99`
+• `Units: pg/mL` -&gt; `Units: pg/mL...100`
+• `` -&gt; `...101`
+• `` -&gt; `...102`
+• `Units: pg/mL` -&gt; `Units: pg/mL...103`
+• `` -&gt; `...104`
+• `` -&gt; `...105`
+• `Units: pg/mL` -&gt; `Units: pg/mL...106`
+• `` -&gt; `...107`
+• `` -&gt; `...108`
+• `Units: pg/mL` -&gt; `Units: pg/mL...109`
+• `` -&gt; `...110`
+• `` -&gt; `...111`
+• `Units: pg/mL` -&gt; `Units: pg/mL...112`
+• `` -&gt; `...113`
+• `` -&gt; `...114`
+• `Units: pg/mL` -&gt; `Units: pg/mL...115`
+• `` -&gt; `...116`
+• `` -&gt; `...117`
+• `Units: pg/mL` -&gt; `Units: pg/mL...118`
+• `` -&gt; `...119`
+• `` -&gt; `...120`
+• `Units: pg/mL` -&gt; `Units: pg/mL...121`
+• `` -&gt; `...122`
+• `` -&gt; `...123`
+• `Units: pg/mL` -&gt; `Units: pg/mL...124`
+• `` -&gt; `...125`
+• `` -&gt; `...126`
+• `Units: pg/mL` -&gt; `Units: pg/mL...127`
+• `` -&gt; `...128`
+• `` -&gt; `...129`
+• `Units: pg/mL` -&gt; `Units: pg/mL...130`
+• `` -&gt; `...131`
+• `` -&gt; `...132`
+• `Units: pg/mL` -&gt; `Units: pg/mL...133`
+• `` -&gt; `...134`
+• `` -&gt; `...135`
+• `Units: pg/mL` -&gt; `Units: pg/mL...136`
+• `` -&gt; `...137`
+• `` -&gt; `...138`
+• `Units: pg/mL` -&gt; `Units: pg/mL...139`
+• `` -&gt; `...140`
+• `` -&gt; `...141`
+• `Units: pg/mL` -&gt; `Units: pg/mL...142`
+• `` -&gt; `...143`
+• `` -&gt; `...144`
+• `Units: pg/mL` -&gt; `Units: pg/mL...145`
+• `` -&gt; `...146`
+• `` -&gt; `...147`
+• `Units: pg/mL` -&gt; `Units: pg/mL...148`
+• `` -&gt; `...149`
+• `` -&gt; `...150`
+• `Units: pg/mL` -&gt; `Units: pg/mL...151`
+• `` -&gt; `...152`
+• `` -&gt; `...153`
+• `Units: pg/mL` -&gt; `Units: pg/mL...154`
+• `` -&gt; `...155`
+• `` -&gt; `...156`
+• `Units: pg/mL` -&gt; `Units: pg/mL...157`
+• `` -&gt; `...158`
+• `` -&gt; `...159`
+• `Units: pg/mL` -&gt; `Units: pg/mL...160`
+• `` -&gt; `...161`
+• `` -&gt; `...162`
+• `Units: pg/mL` -&gt; `Units: pg/mL...163`
+• `` -&gt; `...164`
+• `` -&gt; `...165`
+• `Units: pg/mL` -&gt; `Units: pg/mL...166`
+• `` -&gt; `...167`
+• `` -&gt; `...168`
+• `Units: pg/mL` -&gt; `Units: pg/mL...169`
+• `` -&gt; `...170`
+• `` -&gt; `...171`
+• `Units: pg/mL` -&gt; `Units: pg/mL...172`
+• `` -&gt; `...173`
+• `` -&gt; `...174`
+• `Units: pg/mL` -&gt; `Units: pg/mL...175`
+• `` -&gt; `...176`
+• `` -&gt; `...177`
+• `Units: pg/mL` -&gt; `Units: pg/mL...178`
+• `` -&gt; `...179`
+• `` -&gt; `...180`
+• `Units: pg/mL` -&gt; `Units: pg/mL...181`
+• `` -&gt; `...182`
+• `` -&gt; `...183`
+• `Units: pg/mL` -&gt; `Units: pg/mL...184`
+• `` -&gt; `...185`
+• `` -&gt; `...186`
+• `Units: pg/mL` -&gt; `Units: pg/mL...187`
+• `` -&gt; `...188`
+• `` -&gt; `...189`
+• `Units: pg/mL` -&gt; `Units: pg/mL...190`
+• `` -&gt; `...191`
+• `` -&gt; `...192`
+• `Units: pg/mL` -&gt; `Units: pg/mL...193`
+• `` -&gt; `...194`
+• `` -&gt; `...195`
+• `Units: pg/mL` -&gt; `Units: pg/mL...196`
+• `` -&gt; `...197`</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Ok, screw that, let's just keep it simple</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>rawdata <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"../../../data/batch_2.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+• `` -&gt; `...1`
+• `` -&gt; `...2`
+• `` -&gt; `...3`
+• `Units: pg/mL` -&gt; `Units: pg/mL...4`
+• `` -&gt; `...5`
+• `` -&gt; `...6`
+• `Units: pg/mL` -&gt; `Units: pg/mL...7`
+• `` -&gt; `...8`
+• `` -&gt; `...9`
+• `Units: pg/mL` -&gt; `Units: pg/mL...10`
+• `` -&gt; `...11`
+• `` -&gt; `...12`
+• `Units: pg/mL` -&gt; `Units: pg/mL...13`
+• `` -&gt; `...14`
+• `` -&gt; `...15`
+• `Units: pg/mL` -&gt; `Units: pg/mL...16`
+• `` -&gt; `...17`
+• `` -&gt; `...18`
+• `Units: pg/mL` -&gt; `Units: pg/mL...19`
+• `` -&gt; `...20`
+• `` -&gt; `...21`
+• `Units: pg/mL` -&gt; `Units: pg/mL...22`
+• `` -&gt; `...23`
+• `` -&gt; `...24`
+• `Units: pg/mL` -&gt; `Units: pg/mL...25`
+• `` -&gt; `...26`
+• `` -&gt; `...27`
+• `Units: pg/mL` -&gt; `Units: pg/mL...28`
+• `` -&gt; `...29`
+• `` -&gt; `...30`
+• `Units: pg/mL` -&gt; `Units: pg/mL...31`
+• `` -&gt; `...32`
+• `` -&gt; `...33`
+• `Units: pg/mL` -&gt; `Units: pg/mL...34`
+• `` -&gt; `...35`
+• `` -&gt; `...36`
+• `Units: pg/mL` -&gt; `Units: pg/mL...37`
+• `` -&gt; `...38`
+• `` -&gt; `...39`
+• `Units: pg/mL` -&gt; `Units: pg/mL...40`
+• `` -&gt; `...41`
+• `` -&gt; `...42`
+• `Units: pg/mL` -&gt; `Units: pg/mL...43`
+• `` -&gt; `...44`
+• `` -&gt; `...45`
+• `Units: pg/mL` -&gt; `Units: pg/mL...46`
+• `` -&gt; `...47`
+• `` -&gt; `...48`
+• `Units: pg/mL` -&gt; `Units: pg/mL...49`
+• `` -&gt; `...50`
+• `` -&gt; `...51`
+• `Units: pg/mL` -&gt; `Units: pg/mL...52`
+• `` -&gt; `...53`
+• `` -&gt; `...54`
+• `Units: pg/mL` -&gt; `Units: pg/mL...55`
+• `` -&gt; `...56`
+• `` -&gt; `...57`
+• `Units: pg/mL` -&gt; `Units: pg/mL...58`
+• `` -&gt; `...59`
+• `` -&gt; `...60`
+• `Units: pg/mL` -&gt; `Units: pg/mL...61`
+• `` -&gt; `...62`
+• `` -&gt; `...63`
+• `Units: pg/mL` -&gt; `Units: pg/mL...64`
+• `` -&gt; `...65`
+• `` -&gt; `...66`
+• `Units: pg/mL` -&gt; `Units: pg/mL...67`
+• `` -&gt; `...68`
+• `` -&gt; `...69`
+• `Units: pg/mL` -&gt; `Units: pg/mL...70`
+• `` -&gt; `...71`
+• `` -&gt; `...72`
+• `Units: pg/mL` -&gt; `Units: pg/mL...73`
+• `` -&gt; `...74`
+• `` -&gt; `...75`
+• `Units: pg/mL` -&gt; `Units: pg/mL...76`
+• `` -&gt; `...77`
+• `` -&gt; `...78`
+• `Units: pg/mL` -&gt; `Units: pg/mL...79`
+• `` -&gt; `...80`
+• `` -&gt; `...81`
+• `Units: pg/mL` -&gt; `Units: pg/mL...82`
+• `` -&gt; `...83`
+• `` -&gt; `...84`
+• `Units: pg/mL` -&gt; `Units: pg/mL...85`
+• `` -&gt; `...86`
+• `` -&gt; `...87`
+• `Units: pg/mL` -&gt; `Units: pg/mL...88`
+• `` -&gt; `...89`
+• `` -&gt; `...90`
+• `Units: pg/mL` -&gt; `Units: pg/mL...91`
+• `` -&gt; `...92`
+• `` -&gt; `...93`
+• `Units: pg/mL` -&gt; `Units: pg/mL...94`
+• `` -&gt; `...95`
+• `` -&gt; `...96`
+• `Units: pg/mL` -&gt; `Units: pg/mL...97`
+• `` -&gt; `...98`
+• `` -&gt; `...99`
+• `Units: pg/mL` -&gt; `Units: pg/mL...100`
+• `` -&gt; `...101`
+• `` -&gt; `...102`
+• `Units: pg/mL` -&gt; `Units: pg/mL...103`
+• `` -&gt; `...104`
+• `` -&gt; `...105`
+• `Units: pg/mL` -&gt; `Units: pg/mL...106`
+• `` -&gt; `...107`
+• `` -&gt; `...108`
+• `Units: pg/mL` -&gt; `Units: pg/mL...109`
+• `` -&gt; `...110`
+• `` -&gt; `...111`
+• `Units: pg/mL` -&gt; `Units: pg/mL...112`
+• `` -&gt; `...113`
+• `` -&gt; `...114`
+• `Units: pg/mL` -&gt; `Units: pg/mL...115`
+• `` -&gt; `...116`
+• `` -&gt; `...117`
+• `Units: pg/mL` -&gt; `Units: pg/mL...118`
+• `` -&gt; `...119`
+• `` -&gt; `...120`
+• `Units: pg/mL` -&gt; `Units: pg/mL...121`
+• `` -&gt; `...122`
+• `` -&gt; `...123`
+• `Units: pg/mL` -&gt; `Units: pg/mL...124`
+• `` -&gt; `...125`
+• `` -&gt; `...126`
+• `Units: pg/mL` -&gt; `Units: pg/mL...127`
+• `` -&gt; `...128`
+• `` -&gt; `...129`
+• `Units: pg/mL` -&gt; `Units: pg/mL...130`
+• `` -&gt; `...131`
+• `` -&gt; `...132`
+• `Units: pg/mL` -&gt; `Units: pg/mL...133`
+• `` -&gt; `...134`
+• `` -&gt; `...135`
+• `Units: pg/mL` -&gt; `Units: pg/mL...136`
+• `` -&gt; `...137`
+• `` -&gt; `...138`
+• `Units: pg/mL` -&gt; `Units: pg/mL...139`
+• `` -&gt; `...140`
+• `` -&gt; `...141`
+• `Units: pg/mL` -&gt; `Units: pg/mL...142`
+• `` -&gt; `...143`
+• `` -&gt; `...144`
+• `Units: pg/mL` -&gt; `Units: pg/mL...145`
+• `` -&gt; `...146`
+• `` -&gt; `...147`
+• `Units: pg/mL` -&gt; `Units: pg/mL...148`
+• `` -&gt; `...149`
+• `` -&gt; `...150`
+• `Units: pg/mL` -&gt; `Units: pg/mL...151`
+• `` -&gt; `...152`
+• `` -&gt; `...153`
+• `Units: pg/mL` -&gt; `Units: pg/mL...154`
+• `` -&gt; `...155`
+• `` -&gt; `...156`
+• `Units: pg/mL` -&gt; `Units: pg/mL...157`
+• `` -&gt; `...158`
+• `` -&gt; `...159`
+• `Units: pg/mL` -&gt; `Units: pg/mL...160`
+• `` -&gt; `...161`
+• `` -&gt; `...162`
+• `Units: pg/mL` -&gt; `Units: pg/mL...163`
+• `` -&gt; `...164`
+• `` -&gt; `...165`
+• `Units: pg/mL` -&gt; `Units: pg/mL...166`
+• `` -&gt; `...167`
+• `` -&gt; `...168`
+• `Units: pg/mL` -&gt; `Units: pg/mL...169`
+• `` -&gt; `...170`
+• `` -&gt; `...171`
+• `Units: pg/mL` -&gt; `Units: pg/mL...172`
+• `` -&gt; `...173`
+• `` -&gt; `...174`
+• `Units: pg/mL` -&gt; `Units: pg/mL...175`
+• `` -&gt; `...176`
+• `` -&gt; `...177`
+• `Units: pg/mL` -&gt; `Units: pg/mL...178`
+• `` -&gt; `...179`
+• `` -&gt; `...180`
+• `Units: pg/mL` -&gt; `Units: pg/mL...181`
+• `` -&gt; `...182`
+• `` -&gt; `...183`
+• `Units: pg/mL` -&gt; `Units: pg/mL...184`
+• `` -&gt; `...185`
+• `` -&gt; `...186`
+• `Units: pg/mL` -&gt; `Units: pg/mL...187`
+• `` -&gt; `...188`
+• `` -&gt; `...189`
+• `Units: pg/mL` -&gt; `Units: pg/mL...190`
+• `` -&gt; `...191`
+• `` -&gt; `...192`
+• `Units: pg/mL` -&gt; `Units: pg/mL...193`
+• `` -&gt; `...194`
+• `` -&gt; `...195`
+• `Units: pg/mL` -&gt; `Units: pg/mL...196`
+• `` -&gt; `...197`</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> rawdata[<span class="dv">11</span><span class="sc">:</span><span class="fu">nrow</span>(rawdata),]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(data) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"sample_name"</span>, <span class="st">"dilution"</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">paste0</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">rep</span>(<span class="fu">unlist</span>(<span class="fu">unique</span>(<span class="fu">as.vector</span>(rawdata[<span class="dv">1</span>,])))[<span class="sc">-</span><span class="dv">1</span>], <span class="at">each =</span> <span class="dv">3</span>),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">" FI"</span>, <span class="st">" Obs Conc."</span>, <span class="st">" Exp Conc"</span>), <span class="dv">32</span>)))</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>data_simp <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">ends_with</span>(<span class="fu">c</span>(<span class="st">" Exp Conc"</span>, <span class="st">" FI"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>data_FI <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">ends_with</span>(<span class="fu">c</span>(<span class="st">" Conc"</span>,<span class="st">" Conc."</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="fu">colnames</span>(data_simp)[<span class="dv">3</span><span class="sc">:</span><span class="fu">ncol</span>(data_simp)]){</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#browser()</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  out_of_bounds_lower <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="fu">min</span>(<span class="fu">as.numeric</span>(curves_batch2[[<span class="fu">gsub</span>(<span class="st">" Obs Conc."</span>, <span class="st">""</span>, j)]][,<span class="dv">2</span>]), <span class="at">na.rm =</span><span class="cn">TRUE</span>))</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  out_of_bounds_upper <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="fu">max</span>(<span class="fu">as.numeric</span>(curves_batch2[[<span class="fu">gsub</span>(<span class="st">" Obs Conc."</span>, <span class="st">""</span>, j)]][,<span class="dv">2</span>]), <span class="at">na.rm =</span><span class="cn">TRUE</span>))</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  data_simp[,j] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"OOR &lt;"</span>, data_simp[,j]), out_of_bounds_lower, data_simp[,j])</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    J_FI <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">" Obs Conc."</span>, <span class="st">" FI"</span>, j)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    FI_lower <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">as.numeric</span>(curves_batch2[[<span class="fu">gsub</span>(<span class="st">" Obs Conc."</span>, <span class="st">""</span>, j)]][,<span class="dv">1</span>]), <span class="at">na.rm =</span><span class="cn">TRUE</span>)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    FI_higher <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">as.numeric</span>(curves_batch2[[<span class="fu">gsub</span>(<span class="st">" Obs Conc."</span>, <span class="st">""</span>, j)]][,<span class="dv">1</span>]), <span class="at">na.rm =</span><span class="cn">TRUE</span>)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    data_simp[,j] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">as.numeric</span>(data_FI[,J_FI]) <span class="sc">&lt;=</span> FI_lower,</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>                            out_of_bounds_lower,</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">ifelse</span>(<span class="fu">as.numeric</span>(data_FI[,J_FI]) <span class="sc">&gt;=</span> FI_higher,</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>                                   out_of_bounds_upper, data_simp[,j]))</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data_simp_batch2 <span class="ot">&lt;-</span> data_simp <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>dilution) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sample_name =</span> <span class="fu">paste0</span>(sample_name, <span class="st">"_"</span>, <span class="dv">2</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="batch-3" class="level3">
+<h3 class="anchored" data-anchor-id="batch-3">Batch 3</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>curves_batch3 <span class="ot">&lt;-</span> <span class="fu">extract_std_curves</span>(<span class="st">"../../../data/batch_3.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+• `` -&gt; `...1`
+• `` -&gt; `...2`
+• `` -&gt; `...3`
+• `Units: pg/mL` -&gt; `Units: pg/mL...4`
+• `` -&gt; `...5`
+• `` -&gt; `...6`
+• `Units: pg/mL` -&gt; `Units: pg/mL...7`
+• `` -&gt; `...8`
+• `` -&gt; `...9`
+• `Units: pg/mL` -&gt; `Units: pg/mL...10`
+• `` -&gt; `...11`
+• `` -&gt; `...12`
+• `Units: pg/mL` -&gt; `Units: pg/mL...13`
+• `` -&gt; `...14`
+• `` -&gt; `...15`
+• `Units: pg/mL` -&gt; `Units: pg/mL...16`
+• `` -&gt; `...17`
+• `` -&gt; `...18`
+• `Units: pg/mL` -&gt; `Units: pg/mL...19`
+• `` -&gt; `...20`
+• `` -&gt; `...21`
+• `Units: pg/mL` -&gt; `Units: pg/mL...22`
+• `` -&gt; `...23`
+• `` -&gt; `...24`
+• `Units: pg/mL` -&gt; `Units: pg/mL...25`
+• `` -&gt; `...26`
+• `` -&gt; `...27`
+• `Units: pg/mL` -&gt; `Units: pg/mL...28`
+• `` -&gt; `...29`
+• `` -&gt; `...30`
+• `Units: pg/mL` -&gt; `Units: pg/mL...31`
+• `` -&gt; `...32`
+• `` -&gt; `...33`
+• `Units: pg/mL` -&gt; `Units: pg/mL...34`
+• `` -&gt; `...35`
+• `` -&gt; `...36`
+• `Units: pg/mL` -&gt; `Units: pg/mL...37`
+• `` -&gt; `...38`
+• `` -&gt; `...39`
+• `Units: pg/mL` -&gt; `Units: pg/mL...40`
+• `` -&gt; `...41`
+• `` -&gt; `...42`
+• `Units: pg/mL` -&gt; `Units: pg/mL...43`
+• `` -&gt; `...44`
+• `` -&gt; `...45`
+• `Units: pg/mL` -&gt; `Units: pg/mL...46`
+• `` -&gt; `...47`
+• `` -&gt; `...48`
+• `Units: pg/mL` -&gt; `Units: pg/mL...49`
+• `` -&gt; `...50`
+• `` -&gt; `...51`
+• `Units: pg/mL` -&gt; `Units: pg/mL...52`
+• `` -&gt; `...53`
+• `` -&gt; `...54`
+• `Units: pg/mL` -&gt; `Units: pg/mL...55`
+• `` -&gt; `...56`
+• `` -&gt; `...57`
+• `Units: pg/mL` -&gt; `Units: pg/mL...58`
+• `` -&gt; `...59`
+• `` -&gt; `...60`
+• `Units: pg/mL` -&gt; `Units: pg/mL...61`
+• `` -&gt; `...62`
+• `` -&gt; `...63`
+• `Units: pg/mL` -&gt; `Units: pg/mL...64`
+• `` -&gt; `...65`
+• `` -&gt; `...66`
+• `Units: pg/mL` -&gt; `Units: pg/mL...67`
+• `` -&gt; `...68`
+• `` -&gt; `...69`
+• `Units: pg/mL` -&gt; `Units: pg/mL...70`
+• `` -&gt; `...71`
+• `` -&gt; `...72`
+• `Units: pg/mL` -&gt; `Units: pg/mL...73`
+• `` -&gt; `...74`
+• `` -&gt; `...75`
+• `Units: pg/mL` -&gt; `Units: pg/mL...76`
+• `` -&gt; `...77`
+• `` -&gt; `...78`
+• `Units: pg/mL` -&gt; `Units: pg/mL...79`
+• `` -&gt; `...80`
+• `` -&gt; `...81`
+• `Units: pg/mL` -&gt; `Units: pg/mL...82`
+• `` -&gt; `...83`
+• `` -&gt; `...84`
+• `Units: pg/mL` -&gt; `Units: pg/mL...85`
+• `` -&gt; `...86`
+• `` -&gt; `...87`
+• `Units: pg/mL` -&gt; `Units: pg/mL...88`
+• `` -&gt; `...89`
+• `` -&gt; `...90`
+• `Units: pg/mL` -&gt; `Units: pg/mL...91`
+• `` -&gt; `...92`
+• `` -&gt; `...93`
+• `Units: pg/mL` -&gt; `Units: pg/mL...94`
+• `` -&gt; `...95`
+• `` -&gt; `...96`
+• `Units: pg/mL` -&gt; `Units: pg/mL...97`
+• `` -&gt; `...98`
+• `` -&gt; `...99`
+• `Units: pg/mL` -&gt; `Units: pg/mL...100`
+• `` -&gt; `...101`
+• `` -&gt; `...102`
+• `Units: pg/mL` -&gt; `Units: pg/mL...103`
+• `` -&gt; `...104`
+• `` -&gt; `...105`
+• `Units: pg/mL` -&gt; `Units: pg/mL...106`
+• `` -&gt; `...107`
+• `` -&gt; `...108`
+• `Units: pg/mL` -&gt; `Units: pg/mL...109`
+• `` -&gt; `...110`
+• `` -&gt; `...111`
+• `Units: pg/mL` -&gt; `Units: pg/mL...112`
+• `` -&gt; `...113`
+• `` -&gt; `...114`
+• `Units: pg/mL` -&gt; `Units: pg/mL...115`
+• `` -&gt; `...116`
+• `` -&gt; `...117`
+• `Units: pg/mL` -&gt; `Units: pg/mL...118`
+• `` -&gt; `...119`
+• `` -&gt; `...120`
+• `Units: pg/mL` -&gt; `Units: pg/mL...121`
+• `` -&gt; `...122`
+• `` -&gt; `...123`
+• `Units: pg/mL` -&gt; `Units: pg/mL...124`
+• `` -&gt; `...125`
+• `` -&gt; `...126`
+• `Units: pg/mL` -&gt; `Units: pg/mL...127`
+• `` -&gt; `...128`
+• `` -&gt; `...129`
+• `Units: pg/mL` -&gt; `Units: pg/mL...130`
+• `` -&gt; `...131`
+• `` -&gt; `...132`
+• `Units: pg/mL` -&gt; `Units: pg/mL...133`
+• `` -&gt; `...134`
+• `` -&gt; `...135`
+• `Units: pg/mL` -&gt; `Units: pg/mL...136`
+• `` -&gt; `...137`
+• `` -&gt; `...138`
+• `Units: pg/mL` -&gt; `Units: pg/mL...139`
+• `` -&gt; `...140`
+• `` -&gt; `...141`
+• `Units: pg/mL` -&gt; `Units: pg/mL...142`
+• `` -&gt; `...143`
+• `` -&gt; `...144`
+• `Units: pg/mL` -&gt; `Units: pg/mL...145`
+• `` -&gt; `...146`
+• `` -&gt; `...147`
+• `Units: pg/mL` -&gt; `Units: pg/mL...148`
+• `` -&gt; `...149`
+• `` -&gt; `...150`
+• `Units: pg/mL` -&gt; `Units: pg/mL...151`
+• `` -&gt; `...152`
+• `` -&gt; `...153`
+• `Units: pg/mL` -&gt; `Units: pg/mL...154`
+• `` -&gt; `...155`
+• `` -&gt; `...156`
+• `Units: pg/mL` -&gt; `Units: pg/mL...157`
+• `` -&gt; `...158`
+• `` -&gt; `...159`
+• `Units: pg/mL` -&gt; `Units: pg/mL...160`
+• `` -&gt; `...161`
+• `` -&gt; `...162`
+• `Units: pg/mL` -&gt; `Units: pg/mL...163`
+• `` -&gt; `...164`
+• `` -&gt; `...165`
+• `Units: pg/mL` -&gt; `Units: pg/mL...166`
+• `` -&gt; `...167`
+• `` -&gt; `...168`
+• `Units: pg/mL` -&gt; `Units: pg/mL...169`
+• `` -&gt; `...170`
+• `` -&gt; `...171`
+• `Units: pg/mL` -&gt; `Units: pg/mL...172`
+• `` -&gt; `...173`
+• `` -&gt; `...174`
+• `Units: pg/mL` -&gt; `Units: pg/mL...175`
+• `` -&gt; `...176`
+• `` -&gt; `...177`
+• `Units: pg/mL` -&gt; `Units: pg/mL...178`
+• `` -&gt; `...179`
+• `` -&gt; `...180`
+• `Units: pg/mL` -&gt; `Units: pg/mL...181`
+• `` -&gt; `...182`
+• `` -&gt; `...183`
+• `Units: pg/mL` -&gt; `Units: pg/mL...184`
+• `` -&gt; `...185`
+• `` -&gt; `...186`
+• `Units: pg/mL` -&gt; `Units: pg/mL...187`
+• `` -&gt; `...188`
+• `` -&gt; `...189`
+• `Units: pg/mL` -&gt; `Units: pg/mL...190`
+• `` -&gt; `...191`
+• `` -&gt; `...192`
+• `Units: pg/mL` -&gt; `Units: pg/mL...193`
+• `` -&gt; `...194`
+• `` -&gt; `...195`
+• `Units: pg/mL` -&gt; `Units: pg/mL...196`
+• `` -&gt; `...197`</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>rawdata <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"../../../data/batch_3.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+• `` -&gt; `...1`
+• `` -&gt; `...2`
+• `` -&gt; `...3`
+• `Units: pg/mL` -&gt; `Units: pg/mL...4`
+• `` -&gt; `...5`
+• `` -&gt; `...6`
+• `Units: pg/mL` -&gt; `Units: pg/mL...7`
+• `` -&gt; `...8`
+• `` -&gt; `...9`
+• `Units: pg/mL` -&gt; `Units: pg/mL...10`
+• `` -&gt; `...11`
+• `` -&gt; `...12`
+• `Units: pg/mL` -&gt; `Units: pg/mL...13`
+• `` -&gt; `...14`
+• `` -&gt; `...15`
+• `Units: pg/mL` -&gt; `Units: pg/mL...16`
+• `` -&gt; `...17`
+• `` -&gt; `...18`
+• `Units: pg/mL` -&gt; `Units: pg/mL...19`
+• `` -&gt; `...20`
+• `` -&gt; `...21`
+• `Units: pg/mL` -&gt; `Units: pg/mL...22`
+• `` -&gt; `...23`
+• `` -&gt; `...24`
+• `Units: pg/mL` -&gt; `Units: pg/mL...25`
+• `` -&gt; `...26`
+• `` -&gt; `...27`
+• `Units: pg/mL` -&gt; `Units: pg/mL...28`
+• `` -&gt; `...29`
+• `` -&gt; `...30`
+• `Units: pg/mL` -&gt; `Units: pg/mL...31`
+• `` -&gt; `...32`
+• `` -&gt; `...33`
+• `Units: pg/mL` -&gt; `Units: pg/mL...34`
+• `` -&gt; `...35`
+• `` -&gt; `...36`
+• `Units: pg/mL` -&gt; `Units: pg/mL...37`
+• `` -&gt; `...38`
+• `` -&gt; `...39`
+• `Units: pg/mL` -&gt; `Units: pg/mL...40`
+• `` -&gt; `...41`
+• `` -&gt; `...42`
+• `Units: pg/mL` -&gt; `Units: pg/mL...43`
+• `` -&gt; `...44`
+• `` -&gt; `...45`
+• `Units: pg/mL` -&gt; `Units: pg/mL...46`
+• `` -&gt; `...47`
+• `` -&gt; `...48`
+• `Units: pg/mL` -&gt; `Units: pg/mL...49`
+• `` -&gt; `...50`
+• `` -&gt; `...51`
+• `Units: pg/mL` -&gt; `Units: pg/mL...52`
+• `` -&gt; `...53`
+• `` -&gt; `...54`
+• `Units: pg/mL` -&gt; `Units: pg/mL...55`
+• `` -&gt; `...56`
+• `` -&gt; `...57`
+• `Units: pg/mL` -&gt; `Units: pg/mL...58`
+• `` -&gt; `...59`
+• `` -&gt; `...60`
+• `Units: pg/mL` -&gt; `Units: pg/mL...61`
+• `` -&gt; `...62`
+• `` -&gt; `...63`
+• `Units: pg/mL` -&gt; `Units: pg/mL...64`
+• `` -&gt; `...65`
+• `` -&gt; `...66`
+• `Units: pg/mL` -&gt; `Units: pg/mL...67`
+• `` -&gt; `...68`
+• `` -&gt; `...69`
+• `Units: pg/mL` -&gt; `Units: pg/mL...70`
+• `` -&gt; `...71`
+• `` -&gt; `...72`
+• `Units: pg/mL` -&gt; `Units: pg/mL...73`
+• `` -&gt; `...74`
+• `` -&gt; `...75`
+• `Units: pg/mL` -&gt; `Units: pg/mL...76`
+• `` -&gt; `...77`
+• `` -&gt; `...78`
+• `Units: pg/mL` -&gt; `Units: pg/mL...79`
+• `` -&gt; `...80`
+• `` -&gt; `...81`
+• `Units: pg/mL` -&gt; `Units: pg/mL...82`
+• `` -&gt; `...83`
+• `` -&gt; `...84`
+• `Units: pg/mL` -&gt; `Units: pg/mL...85`
+• `` -&gt; `...86`
+• `` -&gt; `...87`
+• `Units: pg/mL` -&gt; `Units: pg/mL...88`
+• `` -&gt; `...89`
+• `` -&gt; `...90`
+• `Units: pg/mL` -&gt; `Units: pg/mL...91`
+• `` -&gt; `...92`
+• `` -&gt; `...93`
+• `Units: pg/mL` -&gt; `Units: pg/mL...94`
+• `` -&gt; `...95`
+• `` -&gt; `...96`
+• `Units: pg/mL` -&gt; `Units: pg/mL...97`
+• `` -&gt; `...98`
+• `` -&gt; `...99`
+• `Units: pg/mL` -&gt; `Units: pg/mL...100`
+• `` -&gt; `...101`
+• `` -&gt; `...102`
+• `Units: pg/mL` -&gt; `Units: pg/mL...103`
+• `` -&gt; `...104`
+• `` -&gt; `...105`
+• `Units: pg/mL` -&gt; `Units: pg/mL...106`
+• `` -&gt; `...107`
+• `` -&gt; `...108`
+• `Units: pg/mL` -&gt; `Units: pg/mL...109`
+• `` -&gt; `...110`
+• `` -&gt; `...111`
+• `Units: pg/mL` -&gt; `Units: pg/mL...112`
+• `` -&gt; `...113`
+• `` -&gt; `...114`
+• `Units: pg/mL` -&gt; `Units: pg/mL...115`
+• `` -&gt; `...116`
+• `` -&gt; `...117`
+• `Units: pg/mL` -&gt; `Units: pg/mL...118`
+• `` -&gt; `...119`
+• `` -&gt; `...120`
+• `Units: pg/mL` -&gt; `Units: pg/mL...121`
+• `` -&gt; `...122`
+• `` -&gt; `...123`
+• `Units: pg/mL` -&gt; `Units: pg/mL...124`
+• `` -&gt; `...125`
+• `` -&gt; `...126`
+• `Units: pg/mL` -&gt; `Units: pg/mL...127`
+• `` -&gt; `...128`
+• `` -&gt; `...129`
+• `Units: pg/mL` -&gt; `Units: pg/mL...130`
+• `` -&gt; `...131`
+• `` -&gt; `...132`
+• `Units: pg/mL` -&gt; `Units: pg/mL...133`
+• `` -&gt; `...134`
+• `` -&gt; `...135`
+• `Units: pg/mL` -&gt; `Units: pg/mL...136`
+• `` -&gt; `...137`
+• `` -&gt; `...138`
+• `Units: pg/mL` -&gt; `Units: pg/mL...139`
+• `` -&gt; `...140`
+• `` -&gt; `...141`
+• `Units: pg/mL` -&gt; `Units: pg/mL...142`
+• `` -&gt; `...143`
+• `` -&gt; `...144`
+• `Units: pg/mL` -&gt; `Units: pg/mL...145`
+• `` -&gt; `...146`
+• `` -&gt; `...147`
+• `Units: pg/mL` -&gt; `Units: pg/mL...148`
+• `` -&gt; `...149`
+• `` -&gt; `...150`
+• `Units: pg/mL` -&gt; `Units: pg/mL...151`
+• `` -&gt; `...152`
+• `` -&gt; `...153`
+• `Units: pg/mL` -&gt; `Units: pg/mL...154`
+• `` -&gt; `...155`
+• `` -&gt; `...156`
+• `Units: pg/mL` -&gt; `Units: pg/mL...157`
+• `` -&gt; `...158`
+• `` -&gt; `...159`
+• `Units: pg/mL` -&gt; `Units: pg/mL...160`
+• `` -&gt; `...161`
+• `` -&gt; `...162`
+• `Units: pg/mL` -&gt; `Units: pg/mL...163`
+• `` -&gt; `...164`
+• `` -&gt; `...165`
+• `Units: pg/mL` -&gt; `Units: pg/mL...166`
+• `` -&gt; `...167`
+• `` -&gt; `...168`
+• `Units: pg/mL` -&gt; `Units: pg/mL...169`
+• `` -&gt; `...170`
+• `` -&gt; `...171`
+• `Units: pg/mL` -&gt; `Units: pg/mL...172`
+• `` -&gt; `...173`
+• `` -&gt; `...174`
+• `Units: pg/mL` -&gt; `Units: pg/mL...175`
+• `` -&gt; `...176`
+• `` -&gt; `...177`
+• `Units: pg/mL` -&gt; `Units: pg/mL...178`
+• `` -&gt; `...179`
+• `` -&gt; `...180`
+• `Units: pg/mL` -&gt; `Units: pg/mL...181`
+• `` -&gt; `...182`
+• `` -&gt; `...183`
+• `Units: pg/mL` -&gt; `Units: pg/mL...184`
+• `` -&gt; `...185`
+• `` -&gt; `...186`
+• `Units: pg/mL` -&gt; `Units: pg/mL...187`
+• `` -&gt; `...188`
+• `` -&gt; `...189`
+• `Units: pg/mL` -&gt; `Units: pg/mL...190`
+• `` -&gt; `...191`
+• `` -&gt; `...192`
+• `Units: pg/mL` -&gt; `Units: pg/mL...193`
+• `` -&gt; `...194`
+• `` -&gt; `...195`
+• `Units: pg/mL` -&gt; `Units: pg/mL...196`
+• `` -&gt; `...197`</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> rawdata[<span class="dv">11</span><span class="sc">:</span><span class="fu">nrow</span>(rawdata),]</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(data) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"sample_name"</span>, <span class="st">"dilution"</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">paste0</span>(</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">rep</span>(<span class="fu">unlist</span>(<span class="fu">unique</span>(<span class="fu">as.vector</span>(rawdata[<span class="dv">1</span>,])))[<span class="sc">-</span><span class="dv">1</span>], <span class="at">each =</span> <span class="dv">3</span>),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">" FI"</span>, <span class="st">" Obs Conc."</span>, <span class="st">" Exp Conc"</span>), <span class="dv">32</span>)))</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>data_simp <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">ends_with</span>(<span class="fu">c</span>(<span class="st">" Exp Conc"</span>, <span class="st">" FI"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>data_FI <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">ends_with</span>(<span class="fu">c</span>(<span class="st">" Conc"</span>,<span class="st">" Conc."</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="fu">colnames</span>(data_simp)[<span class="dv">3</span><span class="sc">:</span><span class="fu">ncol</span>(data_simp)]){</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  out_of_bounds_lower <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="fu">min</span>(<span class="fu">as.numeric</span>(curves_batch3[[<span class="fu">gsub</span>(<span class="st">" Obs Conc."</span>, <span class="st">""</span>, j)]][,<span class="dv">2</span>]), <span class="at">na.rm =</span><span class="cn">TRUE</span>))</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  out_of_bounds_upper <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="fu">max</span>(<span class="fu">as.numeric</span>(curves_batch3[[<span class="fu">gsub</span>(<span class="st">" Obs Conc."</span>, <span class="st">""</span>, j)]][,<span class="dv">2</span>]), <span class="at">na.rm =</span><span class="cn">TRUE</span>))</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  data_simp[,j] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"OOR &lt;"</span>, data_simp[,j]), out_of_bounds_lower, data_simp[,j])</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    J_FI <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">" Obs Conc."</span>, <span class="st">" FI"</span>, j)</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    FI_lower <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">as.numeric</span>(curves_batch3[[<span class="fu">gsub</span>(<span class="st">" Obs Conc."</span>, <span class="st">""</span>, j)]][,<span class="dv">1</span>]), <span class="at">na.rm =</span><span class="cn">TRUE</span>)</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>    FI_higher <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">as.numeric</span>(curves_batch3[[<span class="fu">gsub</span>(<span class="st">" Obs Conc."</span>, <span class="st">""</span>, j)]][,<span class="dv">1</span>]), <span class="at">na.rm =</span><span class="cn">TRUE</span>)</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    data_simp[,j] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">as.numeric</span>(data_FI[,J_FI]) <span class="sc">&lt;=</span> FI_lower,</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>                            out_of_bounds_lower,</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">ifelse</span>(<span class="fu">as.numeric</span>(data_FI[,J_FI]) <span class="sc">&gt;=</span> FI_higher,</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>                                   out_of_bounds_upper, data_simp[,j]))</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion
+
+Warning: NAs introduced by coercion</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>data_simp_batch3 <span class="ot">&lt;-</span> data_simp <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>dilution) <span class="sc">%&gt;%</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sample_name =</span> <span class="fu">paste0</span>(sample_name, <span class="st">"_"</span>, <span class="dv">3</span>)) </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>data_simp <span class="ot">&lt;-</span> plyr<span class="sc">::</span><span class="fu">rbind.fill</span>(data_simp_batch2, data_simp_batch3) <span class="sc">%&gt;%</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(metadata, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"sample_name"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(sample_name, Sample, Batch, ID, Group, sample_type)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>metadata <span class="ot">&lt;-</span> data_simp[,<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data_simp[,<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">6</span>]</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data, <span class="cf">function</span>(x) {</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(x))</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>detectable <span class="ot">&lt;-</span> <span class="fu">apply</span>(data, <span class="dv">2</span>, <span class="cf">function</span>(x){<span class="fu">length</span>(<span class="fu">unique</span>(x))})</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>keep <span class="ot">&lt;-</span> detectable <span class="sc">&gt;</span> <span class="dv">1</span> <span class="sc">&amp;</span> (<span class="fu">apply</span>(data, <span class="dv">2</span>, <span class="cf">function</span>(x){<span class="fu">sum</span>(<span class="fu">is.na</span>(x))}) <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data[, keep <span class="sc">==</span> <span class="st">"TRUE"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="panel-a" class="level3">
+<h3 class="anchored" data-anchor-id="panel-a">Panel A</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggbiplot)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>cyto.pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(data, <span class="at">center =</span> <span class="cn">TRUE</span>, <span class="at">scale =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>metadata_tmp <span class="ot">&lt;-</span> metadata <span class="sc">%&gt;%</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Group =</span> <span class="fu">gsub</span>(<span class="st">"snAE Post Steroids"</span>, <span class="st">"snAE</span><span class="sc">\n</span><span class="st">Post Steroids"</span>, Group)) <span class="sc">%&gt;%</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">Group =</span> <span class="fu">gsub</span>(<span class="st">"Epilepsy"</span>, <span class="st">"AED</span><span class="sc">\n</span><span class="st">Responsive</span><span class="sc">\n</span><span class="st">Epilepsy"</span>, Group))</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>gga <span class="ot">&lt;-</span> <span class="fu">ggbiplot</span>(cyto.pca, <span class="at">choices =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">var.axes=</span>F, <span class="at">groups=</span>metadata_tmp<span class="sc">$</span>Group,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">ellipse =</span> T, <span class="at">ellipse.fill =</span> F,<span class="at">ellipse.linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"snAE"</span><span class="ot">=</span><span class="st">"#BF5448"</span>, <span class="st">"CTL"</span><span class="ot">=</span><span class="st">"#9048BF"</span>,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">"AED</span><span class="sc">\n</span><span class="st">Responsive</span><span class="sc">\n</span><span class="st">Epilepsy"</span><span class="ot">=</span><span class="st">"#77BF48"</span>, <span class="st">"MS"</span><span class="ot">=</span><span class="st">"#48B3BF"</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">"snAE</span><span class="sc">\n</span><span class="st">Post Steroids"</span> <span class="ot">=</span> <span class="st">"#DCD921"</span>)) <span class="sc">+</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"PC2 (12.0%)"</span>) <span class="sc">+</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"PC1 (31.7%)"</span>)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>gga</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Too few points to calculate an ellipse</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1 row containing missing values (`geom_path()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Figure1_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="480"></p>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind.data.frame</span>(metadata, cyto.pca<span class="sc">$</span>x) <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Group =</span> <span class="fu">gsub</span>(<span class="st">"snAE Post Steroids"</span>, <span class="st">"snAE</span><span class="sc">\n</span><span class="st">Post Steroids"</span>, Group)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">Group =</span> <span class="fu">gsub</span>(<span class="st">"Epilepsy"</span>, <span class="st">"AED</span><span class="sc">\n</span><span class="st">Responsive</span><span class="sc">\n</span><span class="st">Epilepsy"</span>, Group)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>PC1, <span class="at">y=</span> PC2)) <span class="sc">+</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_ellipse</span>(<span class="fu">aes</span>(<span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"PC2 (12.0%)"</span>) <span class="sc">+</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"PC1 (31.7%)"</span>) <span class="sc">+</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"snAE"</span><span class="ot">=</span><span class="st">"#BF5448"</span>, <span class="st">"CTL"</span><span class="ot">=</span><span class="st">"#9048BF"</span>,</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">"AED</span><span class="sc">\n</span><span class="st">Responsive</span><span class="sc">\n</span><span class="st">Epilepsy"</span><span class="ot">=</span><span class="st">"#77BF48"</span>, <span class="st">"MS"</span><span class="ot">=</span><span class="st">"#48B3BF"</span>,</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">"snAE</span><span class="sc">\n</span><span class="st">Post Steroids"</span> <span class="ot">=</span> <span class="st">"#DCD921"</span>)) <span class="sc">+</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Too few points to calculate an ellipse</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1 row containing missing values (`geom_path()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Figure1_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'scales'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:purrr':
+
+    discard</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:readr':
+
+    col_factor</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>cytokine_order <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">"-"</span>, <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">..*"</span>, <span class="st">""</span>, <span class="fu">rownames</span>(cyto.pca<span class="sc">$</span>rotation)[<span class="fu">order</span>(cyto.pca<span class="sc">$</span>rotation[,<span class="dv">1</span>],<span class="at">decreasing =</span> T)]))</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>ggb <span class="ot">&lt;-</span> cyto.pca<span class="sc">$</span>rotation <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"cytokine"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cytokine =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">"-"</span>, <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">..*"</span>, <span class="st">""</span>, cytokine))) <span class="sc">%&gt;%</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">fct_reorder</span>(cytokine, PC1), <span class="at">x=</span> PC1, <span class="at">fill =</span> PC1)) <span class="sc">+</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Cytokine"</span>) <span class="sc">+</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">midpoint=</span><span class="dv">0</span>, <span class="at">low=</span><span class="fu">muted</span>(<span class="st">"blue"</span>), <span class="at">mid=</span><span class="st">"white"</span>,</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">high=</span><span class="fu">muted</span>(<span class="st">"red"</span>),</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">space =</span><span class="st">"Lab"</span>, <span class="at">guide =</span> <span class="fu">guide_colorbar</span>(<span class="at">label =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">frame.colour =</span> <span class="st">"black"</span>,</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">ticks =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="panel-b-f" class="level3">
+<h3 class="anchored" data-anchor-id="panel-b-f">Panel B-F</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstatix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'rstatix'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:stats':
+
+    filter</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>long_cytokine_full <span class="ot">&lt;-</span> <span class="fu">cbind.data.frame</span>(metadata, data) <span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="sc">-</span>sample_name, <span class="sc">-</span>Sample, <span class="sc">-</span>Batch, <span class="sc">-</span>ID, <span class="sc">-</span>Group, <span class="sc">-</span>sample_type))</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>stats_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(); ggout <span class="ot">&lt;-</span> <span class="fu">list</span>(); ggout2 <span class="ot">&lt;-</span> <span class="fu">list</span>(); ggout_supp <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>of_note <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"MCP.3..28..Obs.Conc."</span>, <span class="st">"IL.13..35..Obs.Conc."</span>, <span class="st">"IL.16..21..Obs.Conc."</span>,<span class="st">"IL.28A..77..Obs.Conc."</span>,  <span class="st">"IL.1a..44..Obs.Conc."</span>, <span class="st">"EGF..12..Obs.Conc."</span>)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">unique</span>(long_cytokine_full<span class="sc">$</span>name)){</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  rstatix_fail <span class="ot">=</span> <span class="cn">FALSE</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  plot_data <span class="ot">&lt;-</span> long_cytokine_full <span class="sc">%&gt;%</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">Group =</span> <span class="fu">gsub</span>(<span class="st">"snAE Post Steroids"</span>, <span class="st">"snAE</span><span class="sc">\n</span><span class="st">Post</span><span class="sc">\n</span><span class="st">Steroids"</span>, Group)) <span class="sc">%&gt;%</span></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">Group =</span> <span class="fu">gsub</span>(<span class="st">"Epilepsy"</span>, <span class="st">"AED</span><span class="sc">\n</span><span class="st">Responsive</span><span class="sc">\n</span><span class="st">Epilepsy"</span>, Group)) <span class="sc">%&gt;%</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(name <span class="sc">==</span> i) <span class="sc">%&gt;%</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">name =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">..*"</span>, <span class="st">""</span>, name)) <span class="sc">%&gt;%</span></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">Group =</span> <span class="fu">factor</span>(Group, <span class="fu">c</span>(<span class="st">"snAE"</span>,  <span class="st">"snAE</span><span class="sc">\n</span><span class="st">Post</span><span class="sc">\n</span><span class="st">Steroids"</span>,</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"CTL"</span>, <span class="st">"AED</span><span class="sc">\n</span><span class="st">Responsive</span><span class="sc">\n</span><span class="st">Epilepsy"</span>,</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"MS"</span>))) </span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>    rstatix_fail <span class="ot">=</span> <span class="cn">TRUE</span></span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>      tmp_stats <span class="ot">&lt;-</span> <span class="fu">compare_means</span>(value <span class="sc">~</span> Group, <span class="at">data=</span> plot_data,</span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">method =</span> <span class="st">"wilcox.test"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(group1 <span class="sc">!=</span> <span class="st">"snAE</span><span class="sc">\n</span><span class="st">Post</span><span class="sc">\n</span><span class="st">Steroids"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(group2 <span class="sc">!=</span> <span class="st">"snAE</span><span class="sc">\n</span><span class="st">Post</span><span class="sc">\n</span><span class="st">Steroids"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">p.adj =</span> <span class="fu">p.adjust</span>(p, <span class="st">"fdr"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_significance</span>(<span class="st">"p.adj"</span>) </span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>    max_value <span class="ot">&lt;-</span> <span class="fu">max</span>(plot_data<span class="sc">$</span>value)</span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>  stats_df <span class="ot">&lt;-</span> plyr<span class="sc">::</span><span class="fu">rbind.fill</span>(stats_df, tmp_stats <span class="sc">%&gt;%</span></span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a>                                 <span class="fu">mutate</span>(<span class="at">cytokine =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">"-"</span>, <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">..*"</span>, <span class="st">""</span>, i))))</span>
+<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">sum</span>(<span class="fu">grepl</span>(<span class="st">"y.position"</span>, <span class="fu">colnames</span>(tmp_stats))) <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;</span> <span class="fu">sum</span>(tmp_stats<span class="sc">$</span>p.adj <span class="sc">&lt;=</span> <span class="fl">0.05</span>) <span class="sc">&gt;</span> <span class="dv">0</span>){</span>
+<span id="cb34-32"><a href="#cb34-32" aria-hidden="true" tabindex="-1"></a>    tmp_stats<span class="sc">$</span>y.position[tmp_stats<span class="sc">$</span>p.adj <span class="sc">&lt;=</span> <span class="fl">0.05</span>] <span class="ot">&lt;-</span> max_value <span class="sc">*</span> (<span class="dv">1</span><span class="sc">+</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">sum</span>(tmp_stats<span class="sc">$</span>p.adj <span class="sc">&lt;=</span> <span class="fl">0.05</span>)) <span class="sc">*</span> <span class="fl">0.1</span>))</span>
+<span id="cb34-33"><a href="#cb34-33" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb34-34"><a href="#cb34-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb34-35"><a href="#cb34-35" aria-hidden="true" tabindex="-1"></a>    gg1 <span class="ot">&lt;-</span> plot_data <span class="sc">%&gt;%</span></span>
+<span id="cb34-36"><a href="#cb34-36" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Group, <span class="at">y=</span> value, <span class="at">color =</span> Group)) <span class="sc">+</span></span>
+<span id="cb34-37"><a href="#cb34-37" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ylab</span>(<span class="fu">paste0</span>(<span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">"-"</span>, <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">..*"</span>, <span class="st">""</span>, i)), <span class="st">"</span><span class="sc">\n</span><span class="st">Concentration (pg/ul)"</span>)) <span class="sc">+</span></span>
+<span id="cb34-38"><a href="#cb34-38" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb34-39"><a href="#cb34-39" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">group =</span> ID), <span class="at">color =</span> <span class="st">'gray'</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span> </span>
+<span id="cb34-40"><a href="#cb34-40" aria-hidden="true" tabindex="-1"></a>      ggbeeswarm<span class="sc">::</span><span class="fu">geom_quasirandom</span>() <span class="sc">+</span></span>
+<span id="cb34-41"><a href="#cb34-41" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ggtitle</span>(<span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">"-"</span>, <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">..*"</span>, <span class="st">""</span>, i))) <span class="sc">+</span></span>
+<span id="cb34-42"><a href="#cb34-42" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb34-43"><a href="#cb34-43" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb34-44"><a href="#cb34-44" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb34-45"><a href="#cb34-45" aria-hidden="true" tabindex="-1"></a>            <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">7</span>),</span>
+<span id="cb34-46"><a href="#cb34-46" aria-hidden="true" tabindex="-1"></a>            <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb34-47"><a href="#cb34-47" aria-hidden="true" tabindex="-1"></a>            <span class="at">axis.ticks =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"black"</span>)) <span class="sc">+</span></span>
+<span id="cb34-48"><a href="#cb34-48" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"snAE"</span><span class="ot">=</span><span class="st">"#BF5448"</span>, <span class="st">"CTL"</span><span class="ot">=</span><span class="st">"#9048BF"</span>,</span>
+<span id="cb34-49"><a href="#cb34-49" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">"AED</span><span class="sc">\n</span><span class="st">Responsive</span><span class="sc">\n</span><span class="st">Epilepsy"</span><span class="ot">=</span><span class="st">"#77BF48"</span>, <span class="st">"MS"</span><span class="ot">=</span><span class="st">"#48B3BF"</span>,</span>
+<span id="cb34-50"><a href="#cb34-50" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">"snAE</span><span class="sc">\n</span><span class="st">Post</span><span class="sc">\n</span><span class="st">Steroids"</span> <span class="ot">=</span> <span class="st">"#DCD921"</span>), <span class="at">name =</span> <span class="st">"Group"</span>) </span>
+<span id="cb34-51"><a href="#cb34-51" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb34-52"><a href="#cb34-52" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">nrow</span>(tmp_stats <span class="sc">%&gt;%</span></span>
+<span id="cb34-53"><a href="#cb34-53" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(p.adj.signif <span class="sc">!=</span> <span class="st">"ns"</span>)) <span class="sc">&gt;</span> <span class="dv">0</span>){</span>
+<span id="cb34-54"><a href="#cb34-54" aria-hidden="true" tabindex="-1"></a>     gg1 <span class="ot">&lt;-</span> gg1 <span class="sc">+</span> <span class="fu">stat_pvalue_manual</span>(tmp_stats <span class="sc">%&gt;%</span></span>
+<span id="cb34-55"><a href="#cb34-55" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(p.adj.signif <span class="sc">!=</span> <span class="st">"ns"</span>),<span class="at">label =</span> <span class="st">"p.adj.signif"</span>)</span>
+<span id="cb34-56"><a href="#cb34-56" aria-hidden="true" tabindex="-1"></a>     <span class="cf">if</span>(<span class="fu">nrow</span>(tmp_stats <span class="sc">%&gt;%</span></span>
+<span id="cb34-57"><a href="#cb34-57" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(p.adj.signif <span class="sc">!=</span> <span class="st">"ns"</span>)) <span class="sc">&gt;</span> <span class="dv">0</span>){</span>
+<span id="cb34-58"><a href="#cb34-58" aria-hidden="true" tabindex="-1"></a>       tmp_stats_sig <span class="ot">&lt;-</span> tmp_stats <span class="sc">%&gt;%</span></span>
+<span id="cb34-59"><a href="#cb34-59" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(p.adj.signif <span class="sc">!=</span> <span class="st">"ns"</span>)</span>
+<span id="cb34-60"><a href="#cb34-60" aria-hidden="true" tabindex="-1"></a>       <span class="cf">if</span>(<span class="st">"snAE"</span> <span class="sc">%in%</span> tmp_stats_sig<span class="sc">$</span>group1 <span class="sc">&amp;</span> <span class="st">"CTL"</span> <span class="sc">%in%</span> tmp_stats_sig<span class="sc">$</span>group2){</span>
+<span id="cb34-61"><a href="#cb34-61" aria-hidden="true" tabindex="-1"></a>          ggout <span class="ot">&lt;-</span> <span class="fu">c</span>(ggout, <span class="fu">list</span>(gg1))</span>
+<span id="cb34-62"><a href="#cb34-62" aria-hidden="true" tabindex="-1"></a>         <span class="fu">names</span>(ggout)[<span class="fu">length</span>(ggout)] <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">"-"</span>, <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">..*"</span>, <span class="st">""</span>, i))</span>
+<span id="cb34-63"><a href="#cb34-63" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb34-64"><a href="#cb34-64" aria-hidden="true" tabindex="-1"></a>       }</span>
+<span id="cb34-65"><a href="#cb34-65" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb34-66"><a href="#cb34-66" aria-hidden="true" tabindex="-1"></a>     }</span>
+<span id="cb34-67"><a href="#cb34-67" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb34-68"><a href="#cb34-68" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb34-69"><a href="#cb34-69" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(i <span class="sc">%in%</span> of_note){</span>
+<span id="cb34-70"><a href="#cb34-70" aria-hidden="true" tabindex="-1"></a>       ggout2 <span class="ot">&lt;-</span> <span class="fu">c</span>(ggout2, <span class="fu">list</span>(gg1))</span>
+<span id="cb34-71"><a href="#cb34-71" aria-hidden="true" tabindex="-1"></a>       <span class="fu">names</span>(ggout2)[<span class="fu">length</span>(ggout2)] <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">"-"</span>, <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">..*"</span>, <span class="st">""</span>, i))</span>
+<span id="cb34-72"><a href="#cb34-72" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb34-73"><a href="#cb34-73" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb34-74"><a href="#cb34-74" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span><span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">"-"</span>, <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">..*"</span>, <span class="st">""</span>, i)) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="fu">names</span>(ggout), <span class="fu">names</span>(ggout2))){</span>
+<span id="cb34-75"><a href="#cb34-75" aria-hidden="true" tabindex="-1"></a>       ggout_supp <span class="ot">&lt;-</span> <span class="fu">c</span>(ggout_supp, <span class="fu">list</span>(gg1))</span>
+<span id="cb34-76"><a href="#cb34-76" aria-hidden="true" tabindex="-1"></a>       <span class="fu">names</span>(ggout_supp)[<span class="fu">length</span>(ggout_supp)] <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">"-"</span>, <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">..*"</span>, <span class="st">""</span>, i))</span>
+<span id="cb34-77"><a href="#cb34-77" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb34-78"><a href="#cb34-78" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb34-79"><a href="#cb34-79" aria-hidden="true" tabindex="-1"></a>   <span class="do">##  gg1</span></span>
+<span id="cb34-80"><a href="#cb34-80" aria-hidden="true" tabindex="-1"></a>  <span class="do">## ggsave(paste0(out_dir, gsub("\\.", "-", gsub("\\.\\..*", "", i)), ".pdf"), width =4, height =4)</span></span>
+<span id="cb34-81"><a href="#cb34-81" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.
+Unknown or uninitialised column: `y.position`.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(stats_df , <span class="fu">paste0</span>(out_dir, <span class="st">"supplemental_table1.csv"</span>)) <span class="co">#%&gt;% select(-groups)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="assemble-panel" class="level2">
+<h2 class="anchored" data-anchor-id="assemble-panel">Assemble Panel</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>gg1 <span class="ot">&lt;-</span> <span class="fu">ggarrange</span>(gga, ggb, <span class="at">ncol =</span><span class="dv">1</span>, <span class="at">nrow =</span> <span class="dv">2</span>,<span class="at">labels =</span> LETTERS,<span class="at">heights =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Too few points to calculate an ellipse</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1 row containing missing values (`geom_path()`).</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>gg2 <span class="ot">&lt;-</span> <span class="fu">ggarrange</span>(<span class="at">plotlist =</span> <span class="fu">c</span>(ggout[<span class="fu">order</span>(<span class="fu">match</span>(<span class="fu">names</span>(ggout),cytokine_order))],</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>                              ggout2[<span class="fu">order</span>(<span class="fu">match</span>(<span class="fu">names</span>(ggout2),cytokine_order))]), <span class="at">ncol =</span><span class="dv">4</span>, <span class="at">nrow =</span> <span class="dv">5</span>,<span class="at">labels =</span> LETTERS[<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(gg1, gg2, <span class="at">nrow =</span><span class="dv">1</span>, <span class="at">ncol =</span><span class="dv">2</span>, <span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Figure1_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="1344"></p>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">paste0</span>(out_dir, <span class="st">"Figure1.pdf"</span>), <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">14</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="supplemental-panel-assembly" class="level2">
+<h2 class="anchored" data-anchor-id="supplemental-panel-assembly">Supplemental Panel Assembly</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(<span class="at">plotlist =</span> ggout_supp[<span class="fu">order</span>(<span class="fu">match</span>(<span class="fu">names</span>(ggout_supp),cytokine_order))], <span class="at">ncol =</span><span class="dv">8</span>, <span class="at">nrow =</span> <span class="dv">6</span>,<span class="at">labels =</span> <span class="fu">c</span>(LETTERS, <span class="fu">sapply</span>(LETTERS, <span class="cf">function</span>(x) <span class="fu">paste0</span>(x, LETTERS)))[<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(ggout_supp)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Figure1_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="1344"></p>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">paste0</span>(out_dir, <span class="st">"SupplementalFigure1.pdf"</span>), <span class="at">width =</span> <span class="dv">18</span>, <span class="at">height =</span> <span class="dv">18</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

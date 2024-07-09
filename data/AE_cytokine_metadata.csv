@@ -1,0 +1,34 @@
+sample_name,Sample,Batch,ID,Group,sample_type
+M17_2,M17,2,MS1,MS,Serum
+M18_2,M18,2,MS2,MS,Serum
+M19_2,M19,2,MS3,MS,Serum
+M21_2,M21,2,Epi2,snAE,Serum
+M1_3,M1,3,MS4,MS,Serum
+M2_3,M2,3,MS5,MS,Serum
+M3_3,M3,3,MS6,MS,Serum
+M4_3,M4,3,MS7,MS,Serum
+M5_3,M5,3,MS8,MS,Serum
+M6_3,M6,3,MS9,MS,Serum
+M7_3,M7,3,MS10,MS,Serum
+M8_3,M8,3,MS11,MS,Serum
+M9_3,M9,3,MS12,MS,Serum
+M10_3,M10,3,MS13,MS,Serum
+M11_3,M11,3,MS14,MS,Serum
+M12_3,M12,3,MS15,MS,Serum
+M13_3,M13,3,Ctl2,CTL,Serum
+M14_3,M14,3,Ctl3,CTL,Serum
+M15_3,M15,3,Ctl4,CTL,Serum
+M16_3,M16,3,Ctl5,CTL,Serum
+M17_3,M17,3,Ctl6,CTL,Serum
+M18_3,M18,3,Ctl7,CTL,Serum
+M19_3,M19,3,Ctl8,CTL,Serum
+M20_3,M20,3,Nepi1,Epilepsy,Serum
+M21_3,M21,3,Nepi2,Epilepsy,Serum
+M22_3,M22,3,Nepi3,Epilepsy,Serum
+M23_3,M23,3,Nepi4,Epilepsy,Serum
+M24_3,M24,3,Nepi5,Epilepsy,Serum
+M26_3,M26,3,Epi1,snAE Post Steroids,Serum
+M27_3,M27,3,Epi3 (AE3),snAE,Serum
+M28_3,M28,3,Epi4 (AE4),snAE,Serum
+M29_3,M29,3,Epi5 (AE5),snAE,Serum
+M30_3,M30,3,Epi1,snAE,Serum

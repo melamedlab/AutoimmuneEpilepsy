@@ -1,0 +1,323 @@
+---
+title: "Figure1"
+format: html
+editor: visual
+---
+
+## Figure 1
+
+### Data Load and Set Up
+
+```{r}
+library(tidyverse)
+out_dir <- "../output/"
+#data <- read_csv("../../../data/Cytokine_Results_AE.csv")
+#data$Sample <- paste0(data$Sample, "_", data$Batch)
+metadata <- read_csv("../../../data/AE_cytokine_metadata.csv")
+# data <- data %>%
+#   column_to_rownames("Sample") %>%
+#   select(-Batch, -ID, -Group, -sample_type)
+# 
+# ##############################################################
+# data <- data.frame(lapply(data, function(x) {gsub("OOR <", "0.64", x)}))
+# data <- data.frame(lapply(data, function(x) {gsub("OOR >", "10000", x)}))
+# data <- data.frame(lapply(data, function(x) {gsub("OOR", "0.64", x)}))
+# data <- lapply(data, function(x) {
+#   as.numeric(as.character(x))
+# })
+# data <- as.data.frame(data)
+```
+
+
+### Batch 2
+
+```{r}
+
+extract_std_curves <- function(path){
+  library(readxl)
+  raw_data <- read_xlsx(path)
+  #### Standard Data Processing
+  standard_curve_data <- as.data.frame(raw_data[1:9,])
+  rownames(standard_curve_data)[2:9] <- standard_curve_data[,1][2:9]
+  standard.out <- list()
+  for(i in seq(3, ncol(standard_curve_data), 3)){
+    tmp.data <- standard_curve_data[,i:(i+2)]
+    tmp.name <- tmp.data[1,1]
+    
+    if(!is.na(tmp.name)){
+      colnames(tmp.data) <- tmp.data[2,]
+      tmp.data <- tmp.data[-1:-2,]
+      
+      standard.out <- c(standard.out, list(tmp.data))
+      names(standard.out)[length(standard.out)] <- tmp.name
+    }
+  }
+  return(standard.out)
+}
+curves_batch2 <- extract_std_curves("../../../data/batch_2.xlsx")
+
+```
+
+```{r}
+
+library(tidyverse)
+rawdata <- read_xlsx("../../../data/batch_2.xlsx")
+data <- rawdata[11:nrow(rawdata),]
+colnames(data) <- c("sample_name", "dilution",
+                    paste0(
+                      rep(unlist(unique(as.vector(rawdata[1,])))[-1], each = 3),
+                           rep(c(" FI", " Obs Conc.", " Exp Conc"), 32)))
+
+data_simp <- data %>%
+  select(-ends_with(c(" Exp Conc", " FI"))) %>%
+  as.data.frame()
+
+data_FI <- data %>%
+  select(-ends_with(c(" Conc"," Conc."))) %>%
+  as.data.frame()
+  
+for(j in colnames(data_simp)[3:ncol(data_simp)]){
+  #browser()
+  out_of_bounds_lower <- as.character(min(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,2]), na.rm =TRUE))
+  out_of_bounds_upper <- as.character(max(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,2]), na.rm =TRUE))
+  data_simp[,j] <- ifelse(grepl("OOR <", data_simp[,j]), out_of_bounds_lower, data_simp[,j])
+  
+    J_FI <- gsub(" Obs Conc.", " FI", j)
+    FI_lower <- min(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,1]), na.rm =TRUE)
+    FI_higher <- max(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,1]), na.rm =TRUE)
+    data_simp[,j] <- ifelse(as.numeric(data_FI[,J_FI]) <= FI_lower,
+                            out_of_bounds_lower,
+                            ifelse(as.numeric(data_FI[,J_FI]) >= FI_higher,
+                                   out_of_bounds_upper, data_simp[,j]))
+  
+}
+
+data_simp_batch2 <- data_simp %>%
+  select(-dilution) %>%
+  mutate(sample_name = paste0(sample_name, "_", 2)) 
+```
+
+### Batch 3
+
+```{r}
+curves_batch3 <- extract_std_curves("../../../data/batch_3.xlsx")
+
+library(tidyverse)
+rawdata <- read_xlsx("../../../data/batch_3.xlsx")
+data <- rawdata[11:nrow(rawdata),]
+colnames(data) <- c("sample_name", "dilution",
+                    paste0(
+                      rep(unlist(unique(as.vector(rawdata[1,])))[-1], each = 3),
+                           rep(c(" FI", " Obs Conc.", " Exp Conc"), 32)))
+
+data_simp <- data %>%
+  select(-ends_with(c(" Exp Conc", " FI"))) %>%
+  as.data.frame()
+
+data_FI <- data %>%
+  select(-ends_with(c(" Conc"," Conc."))) %>%
+  as.data.frame()
+  
+for(j in colnames(data_simp)[3:ncol(data_simp)]){
+  out_of_bounds_lower <- as.character(min(as.numeric(curves_batch3[[gsub(" Obs Conc.", "", j)]][,2]), na.rm =TRUE))
+  out_of_bounds_upper <- as.character(max(as.numeric(curves_batch3[[gsub(" Obs Conc.", "", j)]][,2]), na.rm =TRUE))
+  data_simp[,j] <- ifelse(grepl("OOR <", data_simp[,j]), out_of_bounds_lower, data_simp[,j])
+  
+    J_FI <- gsub(" Obs Conc.", " FI", j)
+    FI_lower <- min(as.numeric(curves_batch3[[gsub(" Obs Conc.", "", j)]][,1]), na.rm =TRUE)
+    FI_higher <- max(as.numeric(curves_batch3[[gsub(" Obs Conc.", "", j)]][,1]), na.rm =TRUE)
+    data_simp[,j] <- ifelse(as.numeric(data_FI[,J_FI]) <= FI_lower,
+                            out_of_bounds_lower,
+                            ifelse(as.numeric(data_FI[,J_FI]) >= FI_higher,
+                                   out_of_bounds_upper, data_simp[,j]))
+  
+}
+
+data_simp_batch3 <- data_simp %>%
+  select(-dilution) %>%
+  mutate(sample_name = paste0(sample_name, "_", 3)) 
+
+data_simp <- plyr::rbind.fill(data_simp_batch2, data_simp_batch3) %>%
+  inner_join(metadata, by = c("sample_name")) %>%
+  relocate(sample_name, Sample, Batch, ID, Group, sample_type)
+
+metadata <- data_simp[,1:6]
+data <- data_simp[,-1:-6]
+data <- lapply(data, function(x) {
+  as.numeric(as.character(x))
+})
+data <- as.data.frame(data)
+
+
+detectable <- apply(data, 2, function(x){length(unique(x))})
+keep <- detectable > 1 & (apply(data, 2, function(x){sum(is.na(x))}) == 0)
+data <- data[, keep == "TRUE"]
+```
+
+### Panel A
+
+```{r, fig.width = 5, fig.height = 4}
+library(ggbiplot)
+cyto.pca <- prcomp(data, center = TRUE, scale = TRUE)
+metadata_tmp <- metadata %>%
+  mutate(Group = gsub("snAE Post Steroids", "snAE\nPost Steroids", Group)) %>%
+      mutate(Group = gsub("Epilepsy", "AED\nResponsive\nEpilepsy", Group))
+gga <- ggbiplot(cyto.pca, choices = c(1,2), var.axes=F, groups=metadata_tmp$Group,
+         ellipse = T, ellipse.fill = F,ellipse.linewidth = 0.5) +
+  theme_classic() +
+  scale_color_manual(values=c("snAE"="#BF5448", "CTL"="#9048BF",
+                                  "AED\nResponsive\nEpilepsy"="#77BF48", "MS"="#48B3BF",
+                                  "snAE\nPost Steroids" = "#DCD921")) +
+  ylab("PC2 (12.0%)") +
+  xlab("PC1 (31.7%)")
+gga
+
+cbind.data.frame(metadata, cyto.pca$x) %>%
+  mutate(Group = gsub("snAE Post Steroids", "snAE\nPost Steroids", Group)) %>%
+      mutate(Group = gsub("Epilepsy", "AED\nResponsive\nEpilepsy", Group)) %>%
+  ggplot(aes(x=PC1, y= PC2)) +
+  geom_point(aes(color = Group)) +
+  stat_ellipse(aes(color = Group)) +
+  ylab("PC2 (12.0%)") +
+  xlab("PC1 (31.7%)") +
+  scale_color_manual(values=c("snAE"="#BF5448", "CTL"="#9048BF",
+                                  "AED\nResponsive\nEpilepsy"="#77BF48", "MS"="#48B3BF",
+                                  "snAE\nPost Steroids" = "#DCD921")) +
+  theme_classic()
+
+```
+```{r, fig.width = 5, fig.height =8}
+library(scales)
+cytokine_order <- gsub("\\.", "-", gsub("\\.\\..*", "", rownames(cyto.pca$rotation)[order(cyto.pca$rotation[,1],decreasing = T)]))
+ggb <- cyto.pca$rotation %>% as.data.frame() %>%
+  rownames_to_column("cytokine") %>%
+  mutate(cytokine = gsub("\\.", "-", gsub("\\.\\..*", "", cytokine))) %>%
+  ggplot(aes(y=fct_reorder(cytokine, PC1), x= PC1, fill = PC1)) +
+  geom_bar(stat = "identity", color = "black") +
+  theme_classic() +
+  ylab("Cytokine") +
+  scale_fill_gradient2(midpoint=0, low=muted("blue"), mid="white",
+                     high=muted("red"),
+                     space ="Lab", guide = guide_colorbar(label = TRUE,
+                                              frame.colour = "black",
+                                              ticks = TRUE))
+
+```
+
+
+
+
+### Panel B-F
+
+```{r, fig.width = 4, fig.height=4}
+library(ggpubr)
+library(rstatix)
+long_cytokine_full <- cbind.data.frame(metadata, data) %>%
+  pivot_longer(cols = c(-sample_name, -Sample, -Batch, -ID, -Group, -sample_type))
+
+stats_df <- data.frame(); ggout <- list(); ggout2 <- list(); ggout_supp <- list()
+of_note <- c("MCP.3..28..Obs.Conc.", "IL.13..35..Obs.Conc.", "IL.16..21..Obs.Conc.","IL.28A..77..Obs.Conc.",  "IL.1a..44..Obs.Conc.", "EGF..12..Obs.Conc.")
+for(i in unique(long_cytokine_full$name)){
+  rstatix_fail = FALSE
+  plot_data <- long_cytokine_full %>%
+      mutate(Group = gsub("snAE Post Steroids", "snAE\nPost\nSteroids", Group)) %>%
+      mutate(Group = gsub("Epilepsy", "AED\nResponsive\nEpilepsy", Group)) %>%
+      filter(name == i) %>%
+      mutate(name = gsub("\\.\\..*", "", name)) %>%
+      mutate(Group = factor(Group, c("snAE",  "snAE\nPost\nSteroids",
+                                     "CTL", "AED\nResponsive\nEpilepsy",
+                                     "MS"))) 
+  
+    rstatix_fail = TRUE
+      tmp_stats <- compare_means(value ~ Group, data= plot_data,
+                                 method = "wilcox.test") %>%
+    filter(group1 != "snAE\nPost\nSteroids") %>%
+    filter(group2 != "snAE\nPost\nSteroids") %>%
+    mutate(p.adj = p.adjust(p, "fdr")) %>%
+    add_significance("p.adj") 
+      
+    max_value <- max(plot_data$value)
+
+  
+  stats_df <- plyr::rbind.fill(stats_df, tmp_stats %>%
+                                 mutate(cytokine = gsub("\\.", "-", gsub("\\.\\..*", "", i))))
+  
+  if(sum(grepl("y.position", colnames(tmp_stats))) == 0 & sum(tmp_stats$p.adj <= 0.05) > 0){
+    tmp_stats$y.position[tmp_stats$p.adj <= 0.05] <- max_value * (1+(c(1:sum(tmp_stats$p.adj <= 0.05)) * 0.1))
+  }
+  
+    gg1 <- plot_data %>%
+      ggplot(aes(x=Group, y= value, color = Group)) +
+      ylab(paste0(gsub("\\.", "-", gsub("\\.\\..*", "", i)), "\nConcentration (pg/ul)")) +
+      geom_boxplot(outlier.shape = NA) +
+      geom_line(aes(group = ID), color = 'gray', alpha = 0.3) + 
+      ggbeeswarm::geom_quasirandom() +
+      ggtitle(gsub("\\.", "-", gsub("\\.\\..*", "", i))) +
+      theme_classic()+
+      theme(legend.position = "none") +
+      theme(plot.title = element_text(hjust = 0.5),
+            axis.text = element_text(color = "black", size = 7),
+            axis.title.x = element_blank(),
+            axis.ticks = element_line(color = "black")) +
+      scale_color_manual(values=c("snAE"="#BF5448", "CTL"="#9048BF",
+                                  "AED\nResponsive\nEpilepsy"="#77BF48", "MS"="#48B3BF",
+                                  "snAE\nPost\nSteroids" = "#DCD921"), name = "Group") 
+ 
+  if(nrow(tmp_stats %>%
+    filter(p.adj.signif != "ns")) > 0){
+     gg1 <- gg1 + stat_pvalue_manual(tmp_stats %>%
+    filter(p.adj.signif != "ns"),label = "p.adj.signif")
+     if(nrow(tmp_stats %>%
+    filter(p.adj.signif != "ns")) > 0){
+       tmp_stats_sig <- tmp_stats %>%
+    filter(p.adj.signif != "ns")
+       if("snAE" %in% tmp_stats_sig$group1 & "CTL" %in% tmp_stats_sig$group2){
+          ggout <- c(ggout, list(gg1))
+         names(ggout)[length(ggout)] <- gsub("\\.", "-", gsub("\\.\\..*", "", i))
+         
+       }
+      
+     }
+  }
+  
+    if(i %in% of_note){
+       ggout2 <- c(ggout2, list(gg1))
+       names(ggout2)[length(ggout2)] <- gsub("\\.", "-", gsub("\\.\\..*", "", i))
+    }
+    
+    if(!gsub("\\.", "-", gsub("\\.\\..*", "", i)) %in% c(names(ggout), names(ggout2))){
+       ggout_supp <- c(ggout_supp, list(gg1))
+       names(ggout_supp)[length(ggout_supp)] <- gsub("\\.", "-", gsub("\\.\\..*", "", i))
+    }
+    
+   ##  gg1
+  ## ggsave(paste0(out_dir, gsub("\\.", "-", gsub("\\.\\..*", "", i)), ".pdf"), width =4, height =4)
+}
+write.csv(stats_df , paste0(out_dir, "supplemental_table1.csv")) #%>% select(-groups)
+
+```
+
+
+## Assemble Panel
+
+```{r, fig.width = 4, fig.height = 10}
+
+gg1 <- ggarrange(gga, ggb, ncol =1, nrow = 2,labels = LETTERS,heights = c(1,3))
+gg2 <- ggarrange(plotlist = c(ggout[order(match(names(ggout),cytokine_order))],
+                              ggout2[order(match(names(ggout2),cytokine_order))]), ncol =4, nrow = 5,labels = LETTERS[-1:-2])
+
+```
+
+```{r, fig.width = 14, fig.height = 14}
+
+ggarrange(gg1, gg2, nrow =1, ncol =2, widths = c(1,2))
+ggsave(paste0(out_dir, "Figure1.pdf"), width = 14, height = 14)
+```
+
+
+## Supplemental Panel Assembly
+```{r, fig.width = 14, fig.height = 14}
+
+ggarrange(plotlist = ggout_supp[order(match(names(ggout_supp),cytokine_order))], ncol =8, nrow = 6,labels = c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))[1:length(ggout_supp)])
+ggsave(paste0(out_dir, "SupplementalFigure1.pdf"), width = 18, height = 18)
+```

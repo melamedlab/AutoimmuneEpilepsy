@@ -1,0 +1,298 @@
+---
+title: "Figure2"
+format: html
+editor: visual
+---
+
+## Figure 2
+
+This code is for panel A and B of Figure 2.
+
+### Data Load and Set Up
+
+```{r}
+require(tidyverse)
+require(readr)
+require(readxl)
+library(ggpubr)
+library(ComplexHeatmap)
+library(rstatix)
+library(data.table)
+metadata <- read_xlsx("../../../data/AE_Phipseq_metadata.xlsx")
+color_pal <- c("MS" = "#48B3BF",
+               "snAE" = "#BF5448",
+               "AED-Responsive\nEpilepsy" = "#77BF48",
+               "Control" = "#9048BF")
+
+out_dir = "../output/"
+```
+
+#### Protein Annotation Files
+
+```{r}
+## Annotation information and files
+## Ion channel list from HUGO: https://genenames.org/
+channel_genes <- read_tsv("../../../databases/human_ion_channels.txt")
+## Subcellular and tissue mappings from Human protein atlas: https://www.proteinatlas.org/
+subcellular_location <- read_tsv("../../../databases/subcellular_location.tsv")
+tissue_map <- read_tsv("../../../databases/normal_tissue.tsv")
+## Organ map is a simplified schematic grouping the tissues into larger organ systems
+organ_map <- read_excel("../../../databases/Tissue_Groupings.xlsx")
+tissue_organ_map <- merge(tissue_map, organ_map, by.x = "Tissue", by.y = "Var1", all.x = T)
+unique(tissue_organ_map$Level)
+tissue_organ_map <- tissue_organ_map[tissue_organ_map$Level != "Not detected",]
+tissue_organ_map <- tissue_organ_map[tissue_organ_map$Level != "Not representative",]
+tissue_organ_map <- tissue_organ_map[tissue_organ_map$Level != "N/A",]
+
+unique(tissue_organ_map$Reliability)
+tissue_organ_map <- tissue_organ_map[tissue_organ_map$Reliability != "Uncertain",]
+tissue_organ_map <- tissue_organ_map[tissue_organ_map$Reliability != "NA",]
+
+tissue_organ_map_condensed <- tissue_organ_map %>%
+  dplyr::select(Tissue, Gene, `Gene name`, `Cell type`, `New Name`) %>%
+  group_by(`Gene name`) %>%
+  dplyr::summarize(organ_system = gsub("NA;", "", paste(unique(`New Name`), collapse = ";")),
+                   tissue = gsub("NA;", "", paste(unique(Tissue), collapse = ";")),
+                   cell_type = gsub("NA;", "", paste(unique(`Cell type`), collapse = ";"))) %>%
+  mutate(CNS = grepl("central nervous system", organ_system))
+
+subcellular_location <- subcellular_location %>%
+  filter(Reliability != "Uncertain") %>%
+  dplyr::select(`Gene name`, `Main location`, `Additional location`, `Extracellular location`) %>%
+  group_by(`Gene name`) %>%
+  dplyr::summarize(main_location = gsub("NA;", "", paste(unique(`Main location`), collapse = ";")),
+                   additional_location = gsub("NA;", "", paste(unique(`Additional location`), collapse = ";")),
+                   extracellular_location = gsub("NA;", "", paste(unique(`Extracellular location`), collapse = ";"))) %>%
+  mutate(Membrane_bound = grepl("Plasma membrane", main_location))
+```
+
+```{r}
+library(GO.db)
+library(biomaRt)
+library(tidyverse)
+## These GO ids are for "neurotransmitter secretion" and "neurotransmitter biosynthetic process"
+ns_genes <- c(GOBPOFFSPRING[["GO:0007269"]], "GO:0007269")
+nb_genes <- c(GOBPOFFSPRING[["GO:0042136"]], "GO:0042136")
+ mart <- useEnsembl("ensembl", dataset = "hsapiens_gene_ensembl") ## , mirror = "useast"
+ mart_retrieved <- getBM(
+   mart = mart,
+   attributes = c(
+     'ensembl_gene_id',
+     'hgnc_symbol',
+     'external_gene_name',
+     'go_id'),
+   filters = 'go',
+   values = c(ns_genes, nb_genes),
+   uniqueRows=TRUE)
+ small_mart <- mart_retrieved %>% distinct(ensembl_gene_id, hgnc_symbol, external_gene_name)
+```
+
+### Panel A
+
+```{r}
+data <- as.data.frame(fread("../../../data/phip8_plate8_h_melamed_Hits_counts_annotated.csv.gz"))
+
+ channel_proteins <- data %>%
+   filter(gene_symbol %in% c(channel_genes$`Approved symbol`)) %>%
+   rowwise() %>%
+   mutate(total = sum(c_across(Melamed_PhIP8_Plate8_06_A6_MS1:Melamed_PhIP8_Plate8_49_E1_Ctl6))) %>%
+   filter(total > 0)
+ 
+ heat_meta <- metadata %>%
+   dplyr::select(sample_name, Condition) %>%
+   column_to_rownames("sample_name")
+ heatdf <- as.data.frame(channel_proteins[,19:50])
+ rownames(heatdf) <- paste0(channel_proteins$gene_symbol, "_", channel_proteins$pep_id)
+ colnames(heatdf) <- gsub(".*Plate8_.._.*._", "", gsub("AE3_Ctl3", "AE3Ctl3", gsub("AE4_Ctl", "AE4Ctl",
+                                                                                   gsub("_NP", "NP", colnames(heatdf)))))
+ 
+ heatdf_channel <- heatdf
+ heatdf_channel <- heatdf_channel[rowSums(heatdf_channel) > 0, ]
+```
+
+```{r}
+
+ nt_proteins <- data %>%
+   #filter(gene_symbol %in% c(channel_genes$`Approved symbol`)) %>%
+   filter(gene_symbol %in% c(mart_retrieved$hgnc_symbol)) %>%
+   rowwise() %>%
+   mutate(total = sum(c_across(Melamed_PhIP8_Plate8_06_A6_MS1:Melamed_PhIP8_Plate8_49_E1_Ctl6))) %>%
+   filter(total > 0)
+ 
+ heat_meta <- metadata %>%
+   dplyr::select(sample_name, Condition) %>%
+   column_to_rownames("sample_name")
+ heatdf <- as.data.frame(nt_proteins[,19:50])
+ rownames(heatdf) <- paste0(nt_proteins$gene_symbol, "_", nt_proteins$pep_id)
+ colnames(heatdf) <- gsub(".*Plate8_.._.*._", "", gsub("AE3_Ctl3", "AE3Ctl3", gsub("AE4_Ctl", "AE4Ctl",
+                                                                                   gsub("_NP", "NP", colnames(heatdf)))))
+ 
+ heat_nt <- heatdf
+ heat_nt <- heat_nt[!rownames(heat_nt) %in% rownames(heatdf_channel), ]  
+ heat_nt <- heat_nt[rowSums(heat_nt) > 0, ]
+ 
+```
+
+```{r}
+ cns_proteins <- data %>%
+   filter(gene_symbol %in% c(tissue_organ_map_condensed$`Gene name`[tissue_organ_map_condensed$CNS])) %>%
+   rowwise() %>%
+   mutate(total = sum(c_across(Melamed_PhIP8_Plate8_06_A6_MS1:Melamed_PhIP8_Plate8_49_E1_Ctl6))) %>%
+   filter(total > 0)
+ 
+ heat_meta <- metadata %>%
+   dplyr::select(sample_name, Condition) %>%
+   column_to_rownames("sample_name")
+ heatdf <- as.data.frame(cns_proteins[,19:50])
+ rownames(heatdf) <- paste0(cns_proteins$gene_symbol, "_", cns_proteins$pep_id)
+ colnames(heatdf) <- gsub(".*Plate8_.._.*._", "", gsub("AE3_Ctl3", "AE3Ctl3", gsub("AE4_Ctl", "AE4Ctl",
+                                                                                   gsub("_NP", "NP", colnames(heatdf)))))
+ 
+ membrane_oligos <- subcellular_location %>%
+   right_join(as.data.frame(rownames(heatdf)) %>%
+                dplyr::rename("oligo_id" = 1) %>%
+                mutate(`Gene name` = gsub("_.*", "", oligo_id))) %>%
+   filter((Membrane_bound))
+ 
+ heat_memb <- heatdf[rownames(heatdf) %in% membrane_oligos$oligo_id, ]  
+ heat_memb <- heat_memb[!rownames(heat_memb) %in% rownames(heatdf_channel), ] 
+ heat_memb <- heat_memb[!rownames(heat_memb) %in% rownames(heat_nt), ] 
+ heat_memb <- heat_memb[rowSums(heat_memb) > 0, ]
+ 
+```
+
+```{r}
+
+ column_ha = HeatmapAnnotation(Group = heat_meta$Condition[match(colnames(heat_memb), rownames(heat_meta))],
+                               col = list(Group = c("MS" = "#48B3BF",
+                                       "Epilepsy_SN" = "#BF5448",
+                                       "Epilepsy_normal" = "#77BF48",
+                                       "Control" = "#9048BF")))
+ row_ha = rowAnnotation(Type = c(
+                        rep("Ion Channel", nrow(heatdf_channel)), rep("Neurotransmitter Associated", nrow(heat_nt)),
+                        rep("Brain Membrane Protein", nrow(heat_memb))),
+                        col = list(Type = c("Ion Channel" = "#4349BF",
+                                "Neurotransmitter Associated" = "#EF0F25",
+                                "Brain Membrane Protein" = "#E06ECB")
+                                ))
+ hfull <- Heatmap(rbind(log10(as.matrix(heatdf_channel[order(row.names(heatdf_channel)), ]) + 1), log10(as.matrix(heat_nt[order(row.names(heat_nt)), ]) + 1),
+                        log10(as.matrix(heat_memb[order(row.names(heat_memb)), ]) + 1)
+                        ),
+                  col = c("white", "red"),
+         name = "log10(RPM)",
+         cluster_rows = FALSE, cluster_columns = FALSE, top_annotation = column_ha, left_annotation = row_ha, 
+         column_split = heat_meta$Condition[match(colnames(heat_memb), rownames(heat_meta))],
+         row_split = c(rep("Ion Channel", nrow(heatdf_channel)),
+                       rep("Neurotransmitter Associated", nrow(heat_nt)),
+                       rep("Brain Membrane Protein", nrow(heat_memb))
+                       ),
+         border = TRUE)
+ 
+ pdf(file=paste0(out_dir, "panel_A.pdf"), width = 12, height = 20)
+ draw(hfull)
+ dev.off()
+```
+
+### Panel B
+
+```{r}
+data <- as.data.frame(fread("../../../data/phip8_plate8_h_melamed_Hits_annotated_filtered.csv.gz"))
+
+colnames(data) <- gsub(".*_", "", gsub("AE4_Ctl4", "AE4Ctl4", gsub("AE3_Ctl3", "AE3Ctl3", gsub("_NP", "NP", colnames(data)))))
+colnames(data)[1:2] <- c("u_pep_id", "pep_id")
+
+check <- data[,-11:-18] %>%
+  pivot_longer(cols = c(-1:-10)) %>%
+  filter(value > 0) %>%
+  left_join(tissue_organ_map_condensed %>% dplyr::rename("symbol" = 1)) %>%
+  left_join(metadata, by = c("name" = "sample_name")) %>%
+  left_join(subcellular_location %>% dplyr::rename("symbol" = 1))
+
+
+data_ready <- check %>%
+  group_by(name, Condition) %>%
+  mutate(CNS_memb = CNS&Membrane_bound) %>%
+  dplyr::summarize(CNS = mean(CNS, na.rm = TRUE),
+                   Membrane_bound = mean(Membrane_bound, na.rm = TRUE),
+                   CNS_Mem = mean(CNS_memb, na.rm = TRUE))
+
+comps <- list(c("Control", "Epilepsy_normal"), c("Epilepsy_normal", "MS"), c("Control", "MS"))
+stats_df <- compare_means(Membrane_bound ~ Condition, comparisons = comps,
+                          p.adjust.method = "fdr",
+                          method='wilcox.test',
+                          data = data_ready )
+stats_df <- stats_df %>% filter(p.adj <= 0.05) %>% mutate(y.position = c(0.2, 0.22,0.24)) %>%
+  add_significance(p.col = "p.adj") %>%
+  mutate(group1 = ifelse(group1 == "Epilepsy_normal", "AED-Responsive\nEpilepsy",
+                            ifelse(group1 == "Epilepsy_SN", "snAE", group1)))%>%
+  mutate(group2 = ifelse(group2 == "Epilepsy_normal", "AED-Responsive\nEpilepsy",
+                         ifelse(group2 == "Epilepsy_SN", "snAE", group2)))
+
+## Panel B
+ggb <- data_ready %>%
+  mutate(Condition = ifelse(Condition == "Epilepsy_normal", "AED-Responsive\nEpilepsy",
+                            ifelse(Condition == "Epilepsy_SN", "snAE", Condition))) %>%
+  mutate(Condition = factor(Condition, c("Control", "snAE", "AED-Responsive\nEpilepsy",
+                                         "MS"))) %>%
+  ggplot(aes(x=Condition, y=Membrane_bound, color = Condition)) +
+  geom_boxplot(width = 0.6, outlier.shape = NA) +
+  ggbeeswarm::geom_quasirandom() +
+  theme_classic() + scale_y_continuous(labels = scales::percent) +
+  xlab("Group") + 
+  ylab("Percent of Auto-Antibodyome\nto Plasma Membrane Proteins (%)") +
+  stat_pvalue_manual(stats_df, label = "p.adj.signif", tip.length = 0.01) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.position = "none",
+        axis.text = element_text(color = "black"),
+        axis.ticks = element_line(color = "black")) +
+  scale_color_manual(values = color_pal)
+ggb
+ggsave(paste0(out_dir, "panel_B.pdf"), width = 3, height = 4)
+
+```
+
+## Panel C
+
+```{r}
+
+stats_df <- compare_means(CNS_Mem ~ Condition, comparisons = comps,
+                          p.adjust.method = "fdr",
+                          method='wilcox.test',
+                          data = data_ready %>%
+                            filter(Condition != "Epilepsy_SP"))
+stats_df <- stats_df %>% filter(p.adj <= 0.05) %>% mutate(y.position = c(0.18, 0.20,0.22)) %>%
+  add_significance(p.col = "p.adj") %>%
+  mutate(group1 = ifelse(group1 == "Epilepsy_normal", "AED-Responsive\nEpilepsy",
+                            ifelse(group1 == "Epilepsy_SN", "snAE", group1)))%>%
+  mutate(group2 = ifelse(group2 == "Epilepsy_normal", "AED-Responsive\nEpilepsy",
+                         ifelse(group2 == "Epilepsy_SN", "snAE", group2)))
+
+### Panel C
+ggc <- data_ready %>%
+  mutate(Condition = ifelse(Condition == "Epilepsy_normal", "AED-Responsive\nEpilepsy",
+                            ifelse(Condition == "Epilepsy_SN", "snAE", Condition))) %>%
+  mutate(Condition = factor(Condition, c("Control", "snAE", "AED-Responsive\nEpilepsy",
+                                         "MS"))) %>%
+  ggplot(aes(x=Condition, y=CNS_Mem, color = Condition)) +
+  geom_boxplot(width = 0.6, outlier.shape = NA) +
+  ggbeeswarm::geom_quasirandom() +
+  theme_classic() + scale_y_continuous(labels = scales::percent) +
+  xlab("Group") + 
+  ylab("Percent of Auto-Antibodyome\nto CNS Plasma Membrane Proteins (%)") +
+  stat_pvalue_manual(stats_df, label = "p.adj.signif", tip.length = 0.01) +
+  #stat_compare_means(comparisons = comps,label = "p.signif") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        legend.position = "none",
+        axis.text = element_text(color = "black"),
+        axis.ticks = element_line(color = "black")) +
+  scale_color_manual(values = color_pal)
+ggc
+ggsave(paste0(out_dir, "panel_C.pdf"), width = 3, height = 4)
+```
+
+### Combine Panels B and C
+
+```{r}
+ggarrange(ggb, ggc, nrow = 2, ncol = 1, labels = c("B", "C"))
+ggsave(paste0(out_dir, "panel_BC.pdf"), width = 3, height = 8)
+```
