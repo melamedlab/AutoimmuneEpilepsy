@@ -1,2 +1,2 @@
 # Autoimmune Epilepsy 
-Code for the paper "Altered Cytokine Profile and Autoantibody Discovery in Seronegative Autoimmune Epilepsy" pre-printed on BioRxiv
+Code for the paper "Altered Cytokine Profile and Autoantibody Discovery in Seronegative Autoimmune Epilepsy" pre-printed on MedRxiv
