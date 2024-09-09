@@ -2,7 +2,7 @@ sample_name,Sample,Batch,ID,Group,sample_type
 M17_2,M17,2,MS1,MS,Serum
 M18_2,M18,2,MS2,MS,Serum
 M19_2,M19,2,MS3,MS,Serum
-M21_2,M21,2,Epi2,snAE,Serum
+M21_2,M21,2,Epi2,snAAE,Serum
 M1_3,M1,3,MS4,MS,Serum
 M2_3,M2,3,MS5,MS,Serum
 M3_3,M3,3,MS6,MS,Serum
@@ -27,8 +27,8 @@ M21_3,M21,3,Nepi2,Epilepsy,Serum
 M22_3,M22,3,Nepi3,Epilepsy,Serum
 M23_3,M23,3,Nepi4,Epilepsy,Serum
 M24_3,M24,3,Nepi5,Epilepsy,Serum
-M26_3,M26,3,Epi1,snAE Post Steroids,Serum
-M27_3,M27,3,Epi3 (AE3),snAE,Serum
-M28_3,M28,3,Epi4 (AE4),snAE,Serum
-M29_3,M29,3,Epi5 (AE5),snAE,Serum
-M30_3,M30,3,Epi1,snAE,Serum
+M26_3,M26,3,Epi1,snAAE Post Steroids,Serum
+M27_3,M27,3,Epi3 (AE3),snAAE,Serum
+M28_3,M28,3,Epi4 (AE4),snAAE,Serum
+M29_3,M29,3,Epi5 (AE5),snAAE,Serum
+M30_3,M30,3,Epi1,snAAE,Serum

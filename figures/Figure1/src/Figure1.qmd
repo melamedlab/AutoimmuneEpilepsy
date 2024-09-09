@@ -11,23 +11,9 @@ editor: visual
 ```{r}
 library(tidyverse)
 out_dir <- "../output/"
-#data <- read_csv("../../../data/Cytokine_Results_AE.csv")
-#data$Sample <- paste0(data$Sample, "_", data$Batch)
-metadata <- read_csv("../../../data/AE_cytokine_metadata.csv")
-# data <- data %>%
-#   column_to_rownames("Sample") %>%
-#   select(-Batch, -ID, -Group, -sample_type)
-# 
-# ##############################################################
-# data <- data.frame(lapply(data, function(x) {gsub("OOR <", "0.64", x)}))
-# data <- data.frame(lapply(data, function(x) {gsub("OOR >", "10000", x)}))
-# data <- data.frame(lapply(data, function(x) {gsub("OOR", "0.64", x)}))
-# data <- lapply(data, function(x) {
-#   as.numeric(as.character(x))
-# })
-# data <- as.data.frame(data)
-```
 
+metadata <- read_csv("../../../data/AE_cytokine_metadata.csv")
+```
 
 ### Batch 2
 
@@ -160,32 +146,33 @@ data <- data[, keep == "TRUE"]
 library(ggbiplot)
 cyto.pca <- prcomp(data, center = TRUE, scale = TRUE)
 metadata_tmp <- metadata %>%
-  mutate(Group = gsub("snAE Post Steroids", "snAE\nPost Steroids", Group)) %>%
-      mutate(Group = gsub("Epilepsy", "AED\nResponsive\nEpilepsy", Group))
+  mutate(Group = gsub("snAAE Post Steroids", "snAAE\nPost Steroids", Group)) %>%
+      mutate(Group = gsub("Epilepsy", "ASM\nResponsive\nEpilepsy", Group))
 gga <- ggbiplot(cyto.pca, choices = c(1,2), var.axes=F, groups=metadata_tmp$Group,
          ellipse = T, ellipse.fill = F,ellipse.linewidth = 0.5) +
   theme_classic() +
-  scale_color_manual(values=c("snAE"="#BF5448", "CTL"="#9048BF",
-                                  "AED\nResponsive\nEpilepsy"="#77BF48", "MS"="#48B3BF",
-                                  "snAE\nPost Steroids" = "#DCD921")) +
+  scale_color_manual(values=c("snAAE"="#BF5448", "CTL"="#9048BF",
+                                  "ASM\nResponsive\nEpilepsy"="#77BF48", "MS"="#48B3BF",
+                                  "snAAE\nPost Steroids" = "#DCD921")) +
   ylab("PC2 (12.0%)") +
   xlab("PC1 (31.7%)")
 gga
 
 cbind.data.frame(metadata, cyto.pca$x) %>%
-  mutate(Group = gsub("snAE Post Steroids", "snAE\nPost Steroids", Group)) %>%
-      mutate(Group = gsub("Epilepsy", "AED\nResponsive\nEpilepsy", Group)) %>%
+  mutate(Group = gsub("snAAE Post Steroids", "snAAE\nPost Steroids", Group)) %>%
+      mutate(Group = gsub("Epilepsy", "ASM\nResponsive\nEpilepsy", Group)) %>%
   ggplot(aes(x=PC1, y= PC2)) +
   geom_point(aes(color = Group)) +
   stat_ellipse(aes(color = Group)) +
   ylab("PC2 (12.0%)") +
   xlab("PC1 (31.7%)") +
-  scale_color_manual(values=c("snAE"="#BF5448", "CTL"="#9048BF",
-                                  "AED\nResponsive\nEpilepsy"="#77BF48", "MS"="#48B3BF",
-                                  "snAE\nPost Steroids" = "#DCD921")) +
+  scale_color_manual(values=c("snAAE"="#BF5448", "CTL"="#9048BF",
+                                  "ASM\nResponsive\nEpilepsy"="#77BF48", "MS"="#48B3BF",
+                                  "snAAE\nPost Steroids" = "#DCD921")) +
   theme_classic()
 
 ```
+
 ```{r, fig.width = 5, fig.height =8}
 library(scales)
 cytokine_order <- gsub("\\.", "-", gsub("\\.\\..*", "", rownames(cyto.pca$rotation)[order(cyto.pca$rotation[,1],decreasing = T)]))
@@ -204,9 +191,6 @@ ggb <- cyto.pca$rotation %>% as.data.frame() %>%
 
 ```
 
-
-
-
 ### Panel B-F
 
 ```{r, fig.width = 4, fig.height=4}
@@ -220,19 +204,19 @@ of_note <- c("MCP.3..28..Obs.Conc.", "IL.13..35..Obs.Conc.", "IL.16..21..Obs.Con
 for(i in unique(long_cytokine_full$name)){
   rstatix_fail = FALSE
   plot_data <- long_cytokine_full %>%
-      mutate(Group = gsub("snAE Post Steroids", "snAE\nPost\nSteroids", Group)) %>%
-      mutate(Group = gsub("Epilepsy", "AED\nResponsive\nEpilepsy", Group)) %>%
+      mutate(Group = gsub("snAAE Post Steroids", "snAAE\nPost\nSteroids", Group)) %>%
+      mutate(Group = gsub("Epilepsy", "ASM\nResponsive\nEpilepsy", Group)) %>%
       filter(name == i) %>%
       mutate(name = gsub("\\.\\..*", "", name)) %>%
-      mutate(Group = factor(Group, c("snAE",  "snAE\nPost\nSteroids",
-                                     "CTL", "AED\nResponsive\nEpilepsy",
+      mutate(Group = factor(Group, c("snAAE",  "snAAE\nPost\nSteroids",
+                                     "CTL", "ASM\nResponsive\nEpilepsy",
                                      "MS"))) 
   
     rstatix_fail = TRUE
       tmp_stats <- compare_means(value ~ Group, data= plot_data,
                                  method = "wilcox.test") %>%
-    filter(group1 != "snAE\nPost\nSteroids") %>%
-    filter(group2 != "snAE\nPost\nSteroids") %>%
+    filter(group1 != "snAAE\nPost\nSteroids") %>%
+    filter(group2 != "snAAE\nPost\nSteroids") %>%
     mutate(p.adj = p.adjust(p, "fdr")) %>%
     add_significance("p.adj") 
       
@@ -259,9 +243,9 @@ for(i in unique(long_cytokine_full$name)){
             axis.text = element_text(color = "black", size = 7),
             axis.title.x = element_blank(),
             axis.ticks = element_line(color = "black")) +
-      scale_color_manual(values=c("snAE"="#BF5448", "CTL"="#9048BF",
-                                  "AED\nResponsive\nEpilepsy"="#77BF48", "MS"="#48B3BF",
-                                  "snAE\nPost\nSteroids" = "#DCD921"), name = "Group") 
+      scale_color_manual(values=c("snAAE"="#BF5448", "CTL"="#9048BF",
+                                  "ASM\nResponsive\nEpilepsy"="#77BF48", "MS"="#48B3BF",
+                                  "snAAE\nPost\nSteroids" = "#DCD921"), name = "Group") 
  
   if(nrow(tmp_stats %>%
     filter(p.adj.signif != "ns")) > 0){
@@ -271,7 +255,7 @@ for(i in unique(long_cytokine_full$name)){
     filter(p.adj.signif != "ns")) > 0){
        tmp_stats_sig <- tmp_stats %>%
     filter(p.adj.signif != "ns")
-       if("snAE" %in% tmp_stats_sig$group1 & "CTL" %in% tmp_stats_sig$group2){
+       if("snAAE" %in% tmp_stats_sig$group1 & "CTL" %in% tmp_stats_sig$group2){
           ggout <- c(ggout, list(gg1))
          names(ggout)[length(ggout)] <- gsub("\\.", "-", gsub("\\.\\..*", "", i))
          
@@ -297,7 +281,6 @@ write.csv(stats_df , paste0(out_dir, "supplemental_table1.csv")) #%>% select(-gr
 
 ```
 
-
 ## Assemble Panel
 
 ```{r, fig.width = 4, fig.height = 10}
@@ -314,10 +297,10 @@ ggarrange(gg1, gg2, nrow =1, ncol =2, widths = c(1,2))
 ggsave(paste0(out_dir, "Figure1.pdf"), width = 14, height = 14)
 ```
 
-
 ## Supplemental Panel Assembly
+
 ```{r, fig.width = 14, fig.height = 14}
 
-ggarrange(plotlist = ggout_supp[order(match(names(ggout_supp),cytokine_order))], ncol =8, nrow = 6,labels = c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))[1:length(ggout_supp)])
-ggsave(paste0(out_dir, "SupplementalFigure1.pdf"), width = 18, height = 18)
+ggarrange(plotlist = ggout_supp[order(match(names(ggout_supp),cytokine_order))], ncol =6, nrow = 8,labels = c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))[1:length(ggout_supp)])
+ggsave(paste0(out_dir, "SupplementalFigure1.pdf"), width = 18, height = 24)
 ```

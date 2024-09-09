@@ -20,8 +20,8 @@ library(rstatix)
 library(data.table)
 metadata <- read_xlsx("../../../data/AE_Phipseq_metadata.xlsx")
 color_pal <- c("MS" = "#48B3BF",
-               "snAE" = "#BF5448",
-               "AED-Responsive\nEpilepsy" = "#77BF48",
+               "snAAE" = "#BF5448",
+               "ASM-Responsive\nEpilepsy" = "#77BF48",
                "Control" = "#9048BF")
 
 out_dir = "../output/"
@@ -223,16 +223,16 @@ stats_df <- compare_means(Membrane_bound ~ Condition, comparisons = comps,
                           data = data_ready )
 stats_df <- stats_df %>% filter(p.adj <= 0.05) %>% mutate(y.position = c(0.2, 0.22,0.24)) %>%
   add_significance(p.col = "p.adj") %>%
-  mutate(group1 = ifelse(group1 == "Epilepsy_normal", "AED-Responsive\nEpilepsy",
-                            ifelse(group1 == "Epilepsy_SN", "snAE", group1)))%>%
-  mutate(group2 = ifelse(group2 == "Epilepsy_normal", "AED-Responsive\nEpilepsy",
-                         ifelse(group2 == "Epilepsy_SN", "snAE", group2)))
+  mutate(group1 = ifelse(group1 == "Epilepsy_normal", "ASM-Responsive\nEpilepsy",
+                            ifelse(group1 == "Epilepsy_SN", "snAAE", group1)))%>%
+  mutate(group2 = ifelse(group2 == "Epilepsy_normal", "ASM-Responsive\nEpilepsy",
+                         ifelse(group2 == "Epilepsy_SN", "snAAE", group2)))
 
 ## Panel B
 ggb <- data_ready %>%
-  mutate(Condition = ifelse(Condition == "Epilepsy_normal", "AED-Responsive\nEpilepsy",
-                            ifelse(Condition == "Epilepsy_SN", "snAE", Condition))) %>%
-  mutate(Condition = factor(Condition, c("Control", "snAE", "AED-Responsive\nEpilepsy",
+  mutate(Condition = ifelse(Condition == "Epilepsy_normal", "ASM-Responsive\nEpilepsy",
+                            ifelse(Condition == "Epilepsy_SN", "snAAE", Condition))) %>%
+  mutate(Condition = factor(Condition, c("Control", "snAAE", "ASM-Responsive\nEpilepsy",
                                          "MS"))) %>%
   ggplot(aes(x=Condition, y=Membrane_bound, color = Condition)) +
   geom_boxplot(width = 0.6, outlier.shape = NA) +
@@ -262,16 +262,16 @@ stats_df <- compare_means(CNS_Mem ~ Condition, comparisons = comps,
                             filter(Condition != "Epilepsy_SP"))
 stats_df <- stats_df %>% filter(p.adj <= 0.05) %>% mutate(y.position = c(0.18, 0.20,0.22)) %>%
   add_significance(p.col = "p.adj") %>%
-  mutate(group1 = ifelse(group1 == "Epilepsy_normal", "AED-Responsive\nEpilepsy",
-                            ifelse(group1 == "Epilepsy_SN", "snAE", group1)))%>%
-  mutate(group2 = ifelse(group2 == "Epilepsy_normal", "AED-Responsive\nEpilepsy",
-                         ifelse(group2 == "Epilepsy_SN", "snAE", group2)))
+  mutate(group1 = ifelse(group1 == "Epilepsy_normal", "ASM-Responsive\nEpilepsy",
+                            ifelse(group1 == "Epilepsy_SN", "snAAE", group1)))%>%
+  mutate(group2 = ifelse(group2 == "Epilepsy_normal", "ASM-Responsive\nEpilepsy",
+                         ifelse(group2 == "Epilepsy_SN", "snAAE", group2)))
 
 ### Panel C
 ggc <- data_ready %>%
-  mutate(Condition = ifelse(Condition == "Epilepsy_normal", "AED-Responsive\nEpilepsy",
-                            ifelse(Condition == "Epilepsy_SN", "snAE", Condition))) %>%
-  mutate(Condition = factor(Condition, c("Control", "snAE", "AED-Responsive\nEpilepsy",
+  mutate(Condition = ifelse(Condition == "Epilepsy_normal", "ASM-Responsive\nEpilepsy",
+                            ifelse(Condition == "Epilepsy_SN", "snAAE", Condition))) %>%
+  mutate(Condition = factor(Condition, c("Control", "snAAE", "ASM-Responsive\nEpilepsy",
                                          "MS"))) %>%
   ggplot(aes(x=Condition, y=CNS_Mem, color = Condition)) +
   geom_boxplot(width = 0.6, outlier.shape = NA) +
