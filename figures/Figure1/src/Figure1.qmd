@@ -127,6 +127,8 @@ data_simp <- plyr::rbind.fill(data_simp_batch2, data_simp_batch3) %>%
   inner_join(metadata, by = c("sample_name")) %>%
   relocate(sample_name, Sample, Batch, ID, Group, sample_type)
 
+### Temporary Check ###
+data_simp <- data_simp[-28,]
 metadata <- data_simp[,1:6]
 data <- data_simp[,-1:-6]
 data <- lapply(data, function(x) {
@@ -138,6 +140,27 @@ data <- as.data.frame(data)
 detectable <- apply(data, 2, function(x){length(unique(x))})
 keep <- detectable > 1 & (apply(data, 2, function(x){sum(is.na(x))}) == 0)
 data <- data[, keep == "TRUE"]
+
+```
+
+### Correlation
+
+```{r, fig.width = 10, fig.height = 10}
+
+cor(data, method = "pearson") %>% as.data.frame() %>%
+  rownames_to_column("rows") %>%
+  pivot_longer(cols = -rows) %>%
+  filter(rows != name) %>%
+  dplyr::summarize(mean = mean(value))
+library(corrplot)
+tmp <-cor(data, method = "pearson")
+rownames(tmp) <- gsub("\\.", "-", gsub("\\.\\..*", "", rownames(tmp)))
+colnames(tmp) <- gsub("\\.", "-", gsub("\\.\\..*", "", colnames(tmp)))
+
+pdf("../output/Correlation_cytokine_plot.pdf", width = 10, height = 10)
+corrplot::corrplot(tmp, type = 'upper', order = "hclust", col = rev(COL2("RdBu", n = 200)), tl.col = "black", tl.cex = 0.8)
+dev.off()
+
 ```
 
 ### Panel A
@@ -145,30 +168,35 @@ data <- data[, keep == "TRUE"]
 ```{r, fig.width = 5, fig.height = 4}
 library(ggbiplot)
 cyto.pca <- prcomp(data, center = TRUE, scale = TRUE)
+
+pcv <- ((cyto.pca$sdev^2) / sum(cyto.pca$sdev^2)) * 100
+
 metadata_tmp <- metadata %>%
-  mutate(Group = gsub("snAAE Post Steroids", "snAAE\nPost Steroids", Group)) %>%
-      mutate(Group = gsub("Epilepsy", "ASM\nResponsive\nEpilepsy", Group))
+  mutate(Group = gsub("snAAE Post Steroids", "snAE\nPost Steroids", Group)) %>%
+      mutate(Group = gsub("Epilepsy", "ASM\nResponsive\nEpilepsy", Group),
+             Group = gsub("snAAE", "snAE", Group))
 gga <- ggbiplot(cyto.pca, choices = c(1,2), var.axes=F, groups=metadata_tmp$Group,
          ellipse = T, ellipse.fill = F,ellipse.linewidth = 0.5) +
   theme_classic() +
-  scale_color_manual(values=c("snAAE"="#BF5448", "CTL"="#9048BF",
+  scale_color_manual(values=c("snAE"="#BF5448", "CTL"="#9048BF",
                                   "ASM\nResponsive\nEpilepsy"="#77BF48", "MS"="#48B3BF",
-                                  "snAAE\nPost Steroids" = "#DCD921")) +
-  ylab("PC2 (12.0%)") +
-  xlab("PC1 (31.7%)")
+                                  "snAE\nPost Steroids" = "#DCD921"), name = "Group") +
+  ylab(paste0("PC2 (", round(pcv[2], 1), "%)")) +
+  xlab(paste0("PC1 (", round(pcv[1], 1), "%)"))
 gga
 
 cbind.data.frame(metadata, cyto.pca$x) %>%
-  mutate(Group = gsub("snAAE Post Steroids", "snAAE\nPost Steroids", Group)) %>%
-      mutate(Group = gsub("Epilepsy", "ASM\nResponsive\nEpilepsy", Group)) %>%
+  mutate(Group = gsub("snAAE Post Steroids", "snAE\nPost Steroids", Group)) %>%
+      mutate(Group = gsub("Epilepsy", "ASM\nResponsive\nEpilepsy", Group),
+             Group = gsub("snAAE", "snAE", Group)) %>%
   ggplot(aes(x=PC1, y= PC2)) +
   geom_point(aes(color = Group)) +
   stat_ellipse(aes(color = Group)) +
-  ylab("PC2 (12.0%)") +
-  xlab("PC1 (31.7%)") +
-  scale_color_manual(values=c("snAAE"="#BF5448", "CTL"="#9048BF",
+  ylab(paste0("PC2 (", round(pcv[2], 1), "%)")) +
+  xlab(paste0("PC1 (", round(pcv[1], 1), "%)")) +
+  scale_color_manual(values=c("snAE"="#BF5448", "CTL"="#9048BF",
                                   "ASM\nResponsive\nEpilepsy"="#77BF48", "MS"="#48B3BF",
-                                  "snAAE\nPost Steroids" = "#DCD921")) +
+                                  "snAE\nPost Steroids" = "#DCD921")) +
   theme_classic()
 
 ```
@@ -191,6 +219,19 @@ ggb <- cyto.pca$rotation %>% as.data.frame() %>%
 
 ```
 
+```{r}
+
+cbind.data.frame(metadata, cyto.pca$x %>% as.data.frame() %>%
+                   dplyr::select(PC1), data) %>%
+  pivot_longer(cols = colnames(data)) %>%
+  group_by(name) %>%
+  dplyr::summarize(cor = cor(PC1, value), R2 = cor(PC1, value)^2) %>%
+  ungroup() %>%
+  dplyr::summarize(mean_cor = mean(abs(cor)), mean_R2 = mean(R2), high_R2 = sum(ifelse(R2>0.5, 1, 0)), super_high_R2 = sum(ifelse(R2>0.7, 1, 0)))
+
+
+```
+
 ### Panel B-F
 
 ```{r, fig.width = 4, fig.height=4}
@@ -204,19 +245,20 @@ of_note <- c("MCP.3..28..Obs.Conc.", "IL.13..35..Obs.Conc.", "IL.16..21..Obs.Con
 for(i in unique(long_cytokine_full$name)){
   rstatix_fail = FALSE
   plot_data <- long_cytokine_full %>%
-      mutate(Group = gsub("snAAE Post Steroids", "snAAE\nPost\nSteroids", Group)) %>%
+      mutate(Group = gsub("snAAE Post Steroids", "snAE\nPost\nSteroids", Group),
+             Group = gsub("snAAE", "snAE", Group)) %>%
       mutate(Group = gsub("Epilepsy", "ASM\nResponsive\nEpilepsy", Group)) %>%
       filter(name == i) %>%
       mutate(name = gsub("\\.\\..*", "", name)) %>%
-      mutate(Group = factor(Group, c("snAAE",  "snAAE\nPost\nSteroids",
+      mutate(Group = factor(Group, c("snAE",  "snAE\nPost\nSteroids",
                                      "CTL", "ASM\nResponsive\nEpilepsy",
                                      "MS"))) 
   
     rstatix_fail = TRUE
       tmp_stats <- compare_means(value ~ Group, data= plot_data,
                                  method = "wilcox.test") %>%
-    filter(group1 != "snAAE\nPost\nSteroids") %>%
-    filter(group2 != "snAAE\nPost\nSteroids") %>%
+    filter(group1 != "snAE\nPost\nSteroids") %>%
+    filter(group2 != "snAE\nPost\nSteroids") %>%
     mutate(p.adj = p.adjust(p, "fdr")) %>%
     add_significance("p.adj") 
       
@@ -243,9 +285,9 @@ for(i in unique(long_cytokine_full$name)){
             axis.text = element_text(color = "black", size = 7),
             axis.title.x = element_blank(),
             axis.ticks = element_line(color = "black")) +
-      scale_color_manual(values=c("snAAE"="#BF5448", "CTL"="#9048BF",
+      scale_color_manual(values=c("snAE"="#BF5448", "CTL"="#9048BF",
                                   "ASM\nResponsive\nEpilepsy"="#77BF48", "MS"="#48B3BF",
-                                  "snAAE\nPost\nSteroids" = "#DCD921"), name = "Group") 
+                                  "snAE\nPost\nSteroids" = "#DCD921"), name = "Group") 
  
   if(nrow(tmp_stats %>%
     filter(p.adj.signif != "ns")) > 0){
@@ -255,7 +297,7 @@ for(i in unique(long_cytokine_full$name)){
     filter(p.adj.signif != "ns")) > 0){
        tmp_stats_sig <- tmp_stats %>%
     filter(p.adj.signif != "ns")
-       if("snAAE" %in% tmp_stats_sig$group1 & "CTL" %in% tmp_stats_sig$group2){
+       if("snAE" %in% tmp_stats_sig$group1 & "CTL" %in% tmp_stats_sig$group2){
           ggout <- c(ggout, list(gg1))
          names(ggout)[length(ggout)] <- gsub("\\.", "-", gsub("\\.\\..*", "", i))
          
@@ -297,10 +339,42 @@ ggarrange(gg1, gg2, nrow =1, ncol =2, widths = c(1,2))
 ggsave(paste0(out_dir, "Figure1.pdf"), width = 14, height = 14)
 ```
 
+#### Source Data
+
+```{r}
+
+write.csv(gga$data %>% select(1:3), "../output/source_data_Figure1A.csv")
+write.csv(ggb$data, "../output/source_data_Figure1B.csv")
+
+plots_c_on <-c(ggout[order(match(names(ggout),cytokine_order))],
+               ggout2[order(match(names(ggout2),cytokine_order))])
+lets <- LETTERS[-1:-2]
+data.out <- data.frame()
+for(i in 1:length(plots_c_on)){
+  active_let <- lets[i]
+  data.out <- rbind.data.frame(data.out, plots_c_on[[i]]$data %>% mutate(panel = active_let))
+}
+write.csv(data.out,
+          paste0("../output/source_data_Figure1C_V.csv"))
+```
+
 ## Supplemental Panel Assembly
 
 ```{r, fig.width = 14, fig.height = 14}
 
 ggarrange(plotlist = ggout_supp[order(match(names(ggout_supp),cytokine_order))], ncol =6, nrow = 8,labels = c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))[1:length(ggout_supp)])
 ggsave(paste0(out_dir, "SupplementalFigure1.pdf"), width = 18, height = 24)
+
+
+
+plots_c_on <- ggout_supp[order(match(names(ggout_supp),cytokine_order))]
+lets <- c(LETTERS, sapply(LETTERS, function(x) paste0(x, LETTERS)))[1:length(ggout_supp)]
+data.out <- data.frame()
+for(i in 1:length(plots_c_on)){
+  active_let <- lets[i]
+  data.out <- rbind.data.frame(data.out, plots_c_on[[i]]$data %>% mutate(panel = active_let))
+  
+}
+write.csv(data.out,
+          paste0("../output/source_data_Supplemental_Figure1.csv"))
 ```

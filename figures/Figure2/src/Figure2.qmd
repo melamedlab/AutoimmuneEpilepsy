@@ -70,21 +70,28 @@ subcellular_location <- subcellular_location %>%
 library(GO.db)
 library(biomaRt)
 library(tidyverse)
+
+### Biomart was retired by ENSEMBL :( 
+##### We have saved a copy of the final mart, but it can not be made public by default on github. If you would like the file please contact the authors of the paper.
 ## These GO ids are for "neurotransmitter secretion" and "neurotransmitter biosynthetic process"
 ns_genes <- c(GOBPOFFSPRING[["GO:0007269"]], "GO:0007269")
 nb_genes <- c(GOBPOFFSPRING[["GO:0042136"]], "GO:0042136")
- mart <- useEnsembl("ensembl", dataset = "hsapiens_gene_ensembl") ## , mirror = "useast"
- mart_retrieved <- getBM(
-   mart = mart,
-   attributes = c(
-     'ensembl_gene_id',
-     'hgnc_symbol',
-     'external_gene_name',
-     'go_id'),
-   filters = 'go',
-   values = c(ns_genes, nb_genes),
-   uniqueRows=TRUE)
- small_mart <- mart_retrieved %>% distinct(ensembl_gene_id, hgnc_symbol, external_gene_name)
+#  mart <- useEnsembl("ensembl", dataset = "hsapiens_gene_ensembl",
+#                     host = "https://e116.ensembl.org") ## 
+#  mart_retrieved <- getBM(
+#    mart = mart,
+#    attributes = c(
+#      'ensembl_gene_id',
+#      'hgnc_symbol',
+#      'external_gene_name',
+#      'go_id'),
+#    filters = 'go',
+#    values = c(ns_genes, nb_genes),
+#    uniqueRows=TRUE)
+
+# write.csv(mart_retrieved, "saved_mart.csv")
+mart_retrieved <- read.csv("saved_mart.csv", row.names = 1)
+ small_mart <- mart_retrieved %>% distinct(ensembl_gene_id, hgnc_symbol, external_gene_name) 
 ```
 
 ### Panel A
@@ -114,7 +121,13 @@ data <- as.data.frame(fread("../../../data/phip8_plate8_h_melamed_Hits_counts_an
 
  nt_proteins <- data %>%
    #filter(gene_symbol %in% c(channel_genes$`Approved symbol`)) %>%
-   filter(gene_symbol %in% c(mart_retrieved$hgnc_symbol)) %>%
+   filter(gene_symbol %in% c(mart_retrieved$hgnc_symbol, "STXBP5",
+                              "ERC2", "NRXN3", "NF1")) %>%
+   # STXBP5, NRXN3 and ERC2 were genes inside the GO code previously, but were not
+   ## retrieved in the Biomart legacy code and we are adding them manually here
+   filter(gene_symbol != "EFR3A") %>%
+   # While now classified as neurotransmitter associated, at time of manuscript drafting
+   ## this was not classified with those GO codes
    rowwise() %>%
    mutate(total = sum(c_across(Melamed_PhIP8_Plate8_06_A6_MS1:Melamed_PhIP8_Plate8_49_E1_Ctl6))) %>%
    filter(total > 0)
@@ -191,6 +204,10 @@ data <- as.data.frame(fread("../../../data/phip8_plate8_h_melamed_Hits_counts_an
  pdf(file=paste0(out_dir, "panel_A.pdf"), width = 12, height = 20)
  draw(hfull)
  dev.off()
+ 
+ write.csv(rbind(log10(as.matrix(heatdf_channel[order(row.names(heatdf_channel)), ]) + 1), log10(as.matrix(heat_nt[order(row.names(heat_nt)), ]) + 1),
+                 log10(as.matrix(heat_memb[order(row.names(heat_memb)), ]) + 1)
+ ), "../output/source_data_Figure2A.csv")
 ```
 
 ### Panel B
@@ -248,7 +265,7 @@ ggb <- data_ready %>%
   scale_color_manual(values = color_pal)
 ggb
 ggsave(paste0(out_dir, "panel_B.pdf"), width = 3, height = 4)
-
+write.csv(ggb$data, "../output/source_data_Figure2B.csv")
 ```
 
 ## Panel C
@@ -288,6 +305,7 @@ ggc <- data_ready %>%
   scale_color_manual(values = color_pal)
 ggc
 ggsave(paste0(out_dir, "panel_C.pdf"), width = 3, height = 4)
+write.csv(ggc$data, "../output/source_data_Figure2C.csv")
 ```
 
 ### Combine Panels B and C

@@ -1,0 +1,322 @@
+---
+title: "Prelim_Grant"
+format: html
+editor: visual
+---
+
+## Figure 3
+
+Figure 3
+
+```{r}
+library(tidyverse)
+out_dir <- "../output/"
+
+metadata <- data.frame(sample_name = c("AE1_Serum", "AE1_CSF", "AE2_Serum", "AE2_CSF"),
+                       subject_id = c("AE1", "AE1", "AE2", "AE2"))
+
+```
+
+## Data Load
+
+```{r}
+extract_std_curves <- function(path, sheet){
+  library(readxl)
+  raw_data <- read_xlsx(path, sheet = sheet)
+  #### Standard Data Processing
+  standard_curve_data <- as.data.frame(raw_data[1:9,])
+  rownames(standard_curve_data)[2:9] <- standard_curve_data[,1][2:9]
+  standard.out <- list()
+  for(i in seq(3, ncol(standard_curve_data), 3)){
+    tmp.data <- standard_curve_data[,i:(i+2)]
+    tmp.name <- tmp.data[1,1]
+    
+    if(!is.na(tmp.name)){
+      colnames(tmp.data) <- tmp.data[2,]
+      tmp.data <- tmp.data[-1:-2,]
+      
+      standard.out <- c(standard.out, list(tmp.data))
+      names(standard.out)[length(standard.out)] <- tmp.name
+    }
+  }
+  return(standard.out)
+}
+curves_batch2 <- extract_std_curves("../../../data/Serum_to_CSF_AE.xlsx", sheet = 1)
+
+################# Extract Data
+library(tidyverse)
+rawdata <- read_xlsx("../../../data/Serum_to_CSF_AE.xlsx", sheet = 1)
+data <- rawdata[11:nrow(rawdata),]
+colnames(data) <- c("sample_name", "dilution",
+                    paste0(
+                      rep(unlist(unique(as.vector(rawdata[1,])))[-1], each = 3),
+                           rep(c(" FI", " Obs Conc.", " Exp Conc"), 32)))
+
+data_simp <- data %>%
+  select(-ends_with(c(" Exp Conc", " FI"))) %>%
+  as.data.frame()
+
+data_FI <- data %>%
+  select(-ends_with(c(" Conc"," Conc."))) %>%
+  as.data.frame()
+  
+for(j in colnames(data_simp)[3:ncol(data_simp)]){
+  #browser()
+  out_of_bounds_lower <- as.character(min(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,2]), na.rm =TRUE))
+  out_of_bounds_upper <- as.character(max(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,2]), na.rm =TRUE))
+  data_simp[,j] <- ifelse(grepl("OOR <", data_simp[,j]), out_of_bounds_lower, data_simp[,j])
+  
+    J_FI <- gsub(" Obs Conc.", " FI", j)
+    FI_lower <- min(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,1]), na.rm =TRUE)
+    FI_higher <- max(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,1]), na.rm =TRUE)
+    data_simp[,j] <- ifelse(as.numeric(data_FI[,J_FI]) <= FI_lower,
+                            out_of_bounds_lower,
+                            ifelse(as.numeric(data_FI[,J_FI]) >= FI_higher,
+                                   out_of_bounds_upper, data_simp[,j]))
+  
+}
+
+data_simp_batch2 <- data_simp %>%
+  select(-dilution) %>%
+  mutate(sample_name) 
+
+data_simp_batch2 <- data_simp_batch2[-1,]
+
+all_data <- data_simp_batch2
+```
+
+```{r}
+
+curves_batch2 <- extract_std_curves("../../../data/Serum_to_CSF_AE.xlsx", sheet = 2)
+
+################# Extract Data
+library(tidyverse)
+rawdata <- read_xlsx("../../../data/Serum_to_CSF_AE.xlsx", sheet = 2)
+data <- rawdata[11:nrow(rawdata),]
+colnames(data) <- c("sample_name", "dilution",
+                    paste0(
+                      rep(unlist(unique(as.vector(rawdata[1,])))[-1], each = 3),
+                           rep(c(" FI", " Obs Conc.", " Exp Conc"), 32)))
+
+data_simp <- data %>%
+  select(-ends_with(c(" Exp Conc", " FI"))) %>%
+  as.data.frame()
+
+data_FI <- data %>%
+  select(-ends_with(c(" Conc"," Conc."))) %>%
+  as.data.frame()
+  
+for(j in colnames(data_simp)[3:ncol(data_simp)]){
+  #browser()
+  out_of_bounds_lower <- as.character(min(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,2]), na.rm =TRUE))
+  out_of_bounds_upper <- as.character(max(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,2]), na.rm =TRUE))
+  data_simp[,j] <- ifelse(grepl("OOR <", data_simp[,j]), out_of_bounds_lower, data_simp[,j])
+  
+    J_FI <- gsub(" Obs Conc.", " FI", j)
+    FI_lower <- min(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,1]), na.rm =TRUE)
+    FI_higher <- max(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,1]), na.rm =TRUE)
+    data_simp[,j] <- ifelse(as.numeric(data_FI[,J_FI]) <= FI_lower,
+                            out_of_bounds_lower,
+                            ifelse(as.numeric(data_FI[,J_FI]) >= FI_higher,
+                                   out_of_bounds_upper, data_simp[,j]))
+  
+}
+
+data_simp_batch2 <- data_simp %>%
+  select(-dilution) %>%
+  mutate(sample_name) 
+
+data_simp_batch2 <- data_simp_batch2[-1,]
+
+all_data <- plyr::rbind.fill(all_data, data_simp_batch2)
+
+
+```
+
+```{r}
+
+
+curves_batch2 <- extract_std_curves("../../../data/Serum_to_CSF_AE.xlsx", sheet = 3)
+
+################# Extract Data
+library(tidyverse)
+rawdata <- read_xlsx("../../../data/Serum_to_CSF_AE.xlsx", sheet = 3)
+data <- rawdata[11:nrow(rawdata),]
+colnames(data) <- c("sample_name", "dilution",
+                    paste0(
+                      rep(unlist(unique(as.vector(rawdata[1,])))[-1], each = 3),
+                           rep(c(" FI", " Obs Conc.", " Exp Conc"), 32)))
+
+data_simp <- data %>%
+  select(-ends_with(c(" Exp Conc", " FI"))) %>%
+  as.data.frame()
+
+data_FI <- data %>%
+  select(-ends_with(c(" Conc"," Conc."))) %>%
+  as.data.frame()
+  
+for(j in colnames(data_simp)[3:ncol(data_simp)]){
+  #browser()
+  out_of_bounds_lower <- as.character(min(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,2]), na.rm =TRUE))
+  out_of_bounds_upper <- as.character(max(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,2]), na.rm =TRUE))
+  data_simp[,j] <- ifelse(grepl("OOR <", data_simp[,j]), out_of_bounds_lower, data_simp[,j])
+  
+    J_FI <- gsub(" Obs Conc.", " FI", j)
+    FI_lower <- min(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,1]), na.rm =TRUE)
+    FI_higher <- max(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,1]), na.rm =TRUE)
+    data_simp[,j] <- ifelse(as.numeric(data_FI[,J_FI]) <= FI_lower,
+                            out_of_bounds_lower,
+                            ifelse(as.numeric(data_FI[,J_FI]) >= FI_higher,
+                                   out_of_bounds_upper, data_simp[,j]))
+  
+}
+
+data_simp_batch2 <- data_simp %>%
+  select(-dilution) %>%
+  mutate(sample_name) 
+
+
+all_data <- plyr::rbind.fill(all_data, data_simp_batch2)
+
+
+```
+
+```{r}
+
+
+curves_batch2 <- extract_std_curves("../../../data/Serum_to_CSF_AE.xlsx", sheet = 4)
+
+################# Extract Data
+library(tidyverse)
+rawdata <- read_xlsx("../../../data/Serum_to_CSF_AE.xlsx", sheet = 4)
+data <- rawdata[11:nrow(rawdata),]
+colnames(data) <- c("sample_name", "dilution",
+                    paste0(
+                      rep(unlist(unique(as.vector(rawdata[1,])))[-1], each = 3),
+                           rep(c(" FI", " Obs Conc.", " Exp Conc"), 32)))
+
+data_simp <- data %>%
+  select(-ends_with(c(" Exp Conc", " FI"))) %>%
+  as.data.frame()
+
+data_FI <- data %>%
+  select(-ends_with(c(" Conc"," Conc."))) %>%
+  as.data.frame()
+  
+for(j in colnames(data_simp)[3:ncol(data_simp)]){
+  #browser()
+  out_of_bounds_lower <- as.character(min(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,2]), na.rm =TRUE))
+  out_of_bounds_upper <- as.character(max(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,2]), na.rm =TRUE))
+  data_simp[,j] <- ifelse(grepl("OOR <", data_simp[,j]), out_of_bounds_lower, data_simp[,j])
+  
+    J_FI <- gsub(" Obs Conc.", " FI", j)
+    FI_lower <- min(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,1]), na.rm =TRUE)
+    FI_higher <- max(as.numeric(curves_batch2[[gsub(" Obs Conc.", "", j)]][,1]), na.rm =TRUE)
+    data_simp[,j] <- ifelse(as.numeric(data_FI[,J_FI]) <= FI_lower,
+                            out_of_bounds_lower,
+                            ifelse(as.numeric(data_FI[,J_FI]) >= FI_higher,
+                                   out_of_bounds_upper, data_simp[,j]))
+  
+}
+
+data_simp_batch2 <- data_simp %>%
+  select(-dilution) %>%
+  mutate(sample_name) 
+
+all_data <- plyr::rbind.fill(all_data, data_simp_batch2)
+
+```
+
+## Graphing
+
+```{r, fig.width = 20, fig.height = 3.5}
+library(ggallin)
+library(scales)
+
+signed_sqrt_trans <- function() {
+  scales::trans_new(
+    "signed_sqrt",
+    transform = function(x) {
+      sign(x) * sqrt(abs(x))
+    },
+    inverse = function(x) {
+      sign(x) * x^2
+    }
+  )
+}
+
+signed_pseudolog_trans <- function() {
+  scales::trans_new(
+    "signed_pseudolog",
+    transform = function(x) {
+      sign(x) * -log10(abs(x))
+    },
+    inverse = function(x) {
+      sign(x) * x^2
+    }
+  )
+}
+
+csf_df <- all_data %>%
+  pivot_longer(cols = -sample_name) %>%
+  left_join(metadata) %>%
+  mutate(name = gsub("\\.\\..*", "", name)) %>%
+  mutate(name = gsub(" \\(.*", "", name)) %>%
+  mutate(sample_type = gsub(".*_", "", sample_name)) %>%
+  mutate(value = as.numeric(value)) %>%
+  pivot_wider(names_from = c(sample_type),
+              values_from = value, id_cols = c(name, subject_id)) %>%
+  rowwise() %>%
+  mutate(differnce = CSF - Serum) 
+
+means <- csf_df %>%
+  mutate(direction = differnce / abs(differnce)) %>%
+  group_by(name) %>%
+  dplyr::summarize(mean = mean(differnce),
+                   direction = sum(direction)) %>%
+  mutate(direction = ifelse(is.na(direction), 0, direction)) %>%
+  arrange(desc(direction), desc(mean))
+  
+zero_group_assignment <- csf_df %>%
+  left_join(means) %>%
+  filter(direction == 0) %>%
+  group_by(name) %>%
+  slice_max(differnce) %>%
+  select(name, subject_id, differnce) %>%
+  dplyr::rename("difference" = "differnce")
+
+means_final <- means %>%
+  left_join(zero_group_assignment)%>%
+  arrange(desc(direction), subject_id, desc(difference), desc(mean)) %>%
+  as.data.frame()
+
+gg3a <- csf_df %>%
+  filter(name != "IL-3") %>% ## difference is zero, so removing
+  mutate(name = factor(name, levels = unique(means_final$name))) %>%
+  left_join(means) %>% as.data.frame() %>%
+  mutate(direction = factor(direction, levels = c("2", "0", "-2"))) %>%
+  mutate(name = factor(name, levels = unique(means_final$name))) %>%
+  mutate(direction = ifelse(direction == 2, "Higher in CSF in Both Participant",
+                            ifelse(direction == 0, "Higher in CSF in One Participant",
+                            "Higher in Serum for Both Participants"))) %>%
+  ggplot(aes(x=name, y=differnce, fill = subject_id)) +
+  geom_bar(position = "dodge", stat = "identity", width = 0.7) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+  ylab("Concentration Difference\nbetween CSF and Serum (pg/ul)")  +
+  #scale_y_continuous(trans = "pseudo_log") +
+  scale_y_continuous(trans =scales::pseudo_log_trans(sigma = 0.01),
+                      breaks = c(1000, 100, 10, 1, 0.1, 0, -0.1, -1, -10, -100, -1000, -10000),
+                     labels = comma) +
+  scale_fill_manual(values = c("#089099", "#ee8eb4"), name = "Subject") +
+  theme(axis.text = element_text(color = "black"),
+        axis.text.x = element_text(size = 11),
+        axis.ticks = element_line(color = "black")) +
+  facet_wrap(~direction, scales = "free", space = "free_x") +
+  geom_hline(yintercept = 0) +
+  coord_cartesian(ylim = c(-10000, 1000))
+gg3a
+ggsave("../output/Figure3.pdf", width = 20, height = 3.5)
+write.csv(gg3a$data, "../output/source_data_Figure3.csv")
+
+```
